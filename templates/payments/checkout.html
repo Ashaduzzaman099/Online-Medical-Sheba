@@ -1,0 +1,233 @@
+{% extends 'base.html' %} {% block title %} {{ user.username }} Medicine
+{%endblock %} {% block content %} {% load static %}
+<section class="checkout-area">
+   <div class="banner-area">
+      <div class="container">
+         <div class="row align-items-center ">
+            <div class="col-md-3">
+               <div class="banner-left-img">
+                  <img src="{% static 'images/slider_img/3.png' %}" alt="">
+               </div>
+            </div>
+            <div class="col-md-6">
+               <div class="title">
+                  <h2>Checkout</h2>
+                  <p>Continue Your Order Process</p>
+               </div>
+            </div>
+            <div class="col-md-3">
+               <div class="banner-left-img">
+                  <img src="{% static 'images/slider_img/4.png' %}" alt="">
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="selected-product-details">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-12">
+               <div class="order-step">
+                  <ul>
+                     <li>
+                        <a href="{% url 'cart:cart_detail' %}">
+                           <h5>Order Items</h5>
+                           <div class="arrow-right">
+                              <i class="far fa-credit-card"></i>
+                              <i class="bi bi-arrow-right"></i>
+                           </div>
+                        </a>
+                     </li>
+                     <li class="active">
+                        <h5>Checkout/Shipping</h5>
+                        <div class="arrow-right">
+                           <i class="fas fa-shipping-fast"></i>
+                           <i class="bi bi-arrow-right"></i>
+                        </div>
+                     </li>
+                     <li>
+                        <h5>Payment</h5>
+                        <div class="arrow-right">
+                           <i class="fas fa-hand-holding-usd"></i>
+                           <i class="bi bi-arrow-right"></i>
+                        </div>
+                     </li>
+                     <li>
+                        <h5>Receipt</h5>
+                        <div class="arrow-right">
+                           <i class="fas fa-file-invoice"></i>
+                           <i class="bi bi-arrow-right"></i>
+                        </div>
+                     </li>
+
+                  </ul>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+   <div class="shipping-method login-area registation">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-12">
+               <div class="shipping-methods register-right form-container sign-up">
+
+                  <form id="shipping-form" method="post" novalidate>
+                     {% csrf_token %}
+                     <h2 class="mb-4 text-center">Update Shipping Address</h2>
+                     <div class="single-box d-flex">
+                        <!-- Full Name -->
+                        <div class="form-group">
+                           <label for="id_shipping_full_name">Full Name:</label>
+
+
+                           <input type="text" name="shipping_full_name"
+                              value="{{ shipping_form.shipping_full_name.value }}" id="id_shipping_full_name"
+                              placeholder="Name" required>
+                           <span class="error" id="error-shipping_full_name"></span>
+                        </div>
+                        <!-- Email -->
+                        <div class="form-group">
+                           <label for="id_shipping_email">Email:</label>
+                           <input type="email" name="shipping_email" value="{{ shipping_form.shipping_email.value }}"
+                              id="id_shipping_email" placeholder="Email Address" required>
+                           <span class="error" id="error-shipping_email"></span>
+                        </div>
+                     </div>
+                     <div class="single-box d-flex">
+                        <!-- Phone Number -->
+                        <div class="form-group">
+                           <label for="id_shipping_phone_number">Phone Number:</label>
+                           <input type="text" name="shipping_phone_number"
+                              value="{{ shipping_form.shipping_phone_number.value }}" id="id_shipping_phone_number"
+                              placeholder="Phone Number" required>
+                           <span class="error" id="error-shipping_phone_number"></span>
+                        </div>
+                        <!-- Address 1 -->
+                        <div class="form-group">
+
+                           <label for="id_shipping_address1">Address 1:</label>
+                           <input type="text" name="shipping_address1"
+                              value="{{ shipping_form.shipping_address1.value }}" id="id_shipping_address1"
+                              placeholder="Address1" required>
+                           <span class="error" id="error-shipping_address1"></span>
+                        </div>
+                     </div>
+
+                     <div class="single-box d-flex">
+                        <!-- Address 2 -->
+                        <div class="form-group">
+
+
+                           <label for="id_shipping_address2">Address 2:</label>
+                           <input type="text" name="shipping_address2"
+                              value="{{ shipping_form.shipping_address2.value }}" id="id_shipping_address2"
+                              placeholder="Address2">
+                           <span class="error" id="error-shipping_address2"></span>
+
+                        </div>
+                        <!-- City -->
+                        <div class="form-group">
+
+                           <label for="id_shipping_city">City:</label>
+                           <input type="text" name="shipping_city" value="{{ shipping_form.shipping_city.value }}"
+                              id="id_shipping_city" placeholder="Put City" required>
+                           <span class="error" id="error-shipping_city"></span>
+
+
+                        </div>
+                     </div>
+
+                     <div class="single-box d-flex">
+                        <!-- State -->
+                        <div class="form-group">
+
+                           <label for="id_shipping_state">State:</label>
+                           <input type="text" name="shipping_state" value="{{ shipping_form.shipping_state.value }}"
+                              id="id_shipping_state" placeholder="Put State">
+                           <span class="error" id="error-shipping_state"></span>
+                        </div>
+                        <!-- Zip Code -->
+                        <div class="form-group">
+
+                           <label for="id_shipping_zip_code">Zip Code:</label>
+                           <input type="text" name="shipping_zip_code"
+                              value="{{ shipping_form.shipping_zip_code.value }}" id="id_shipping_zip_code"
+                              placeholder="Put Zipcode">
+                           <span class="error" id="error-shipping_zip_code"></span>
+
+
+                        </div>
+                     </div>
+
+                     <div class="single-box d-flex">
+                        <!-- Country -->
+                        <div class="form-group">
+                           <!-- Country -->
+                           <label for="id_shipping_country">Country:</label>
+                           <input type="text" name="shipping_country" value="{{ shipping_form.shipping_country.value }}"
+                              id="id_shipping_country" placeholder="Put Country" required>
+                           <span class="error" id="error-shipping_country"></span>
+                        </div>
+                     </div>
+
+
+                     <button type="submit" class="btn-style-1">Continue To Billing</button>
+                  </form>
+
+
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+</section>
+
+<script>
+   document.querySelector('#shipping-form').addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent default form submission
+
+      const form = this;
+      const formData = new FormData(form);
+
+      // Send the data via AJAX to the server for validation
+      fetch("{% url 'payments:validate_shipping_form' %}", {
+         method: 'POST',
+         body: formData,
+         headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value // Include CSRF token
+         }
+      })
+         .then(response => response.json())
+         .then(data => {
+            // Clear previous error messages
+            document.querySelectorAll('.error').forEach(errorSpan => {
+               errorSpan.textContent = '';
+            });
+
+            if (data.success) {
+               // If the form is valid, submit it or proceed further
+               form.submit(); // Submit the form or navigate to the next step
+            } else if (data.errors) {
+               // Handle validation errors
+               for (const [field, errorMessages] of Object.entries(data.errors)) {
+                  // Find the error span related to the field
+                  const errorSpan = document.getElementById(`error-${field}`);
+                  if (errorSpan) {
+                     errorSpan.textContent = errorMessages.join(', ');
+                  }
+               }
+            }
+         })
+         .catch(error => {
+            console.error('Error:', error);
+         });
+   });
+</script>
+
+
+
+{% endblock %}

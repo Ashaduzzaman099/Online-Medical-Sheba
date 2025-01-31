@@ -1,0 +1,227 @@
+{% extends 'base.html' %} {% block title %} {{ user.username }} Medicine
+{%endblock %} {% block content %} {% load static %}
+<section class="checkout-area">
+   <div class="banner-area">
+      <div class="container">
+         <div class="row align-items-center ">
+            <div class="col-md-3">
+               <div class="banner-left-img">
+                  <img src="{% static 'images/slider_img/3.png' %}" alt="">
+               </div>
+            </div>
+            <div class="col-md-6">
+               <div class="title">
+                  <h2>Billing Details</h2>
+                  <p>Continue Your Order Process</p>
+               </div>
+            </div>
+            <div class="col-md-3">
+               <div class="banner-left-img">
+                  <img src="{% static 'images/slider_img/4.png' %}" alt="">
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="selected-product-details">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-12">
+               <div class="order-step">
+                  <ul>
+                     <li>
+                        <a href="{% url 'cart:cart_detail' %}">
+                           <h5>Order Items</h5>
+                           <div class="arrow-right">
+                              <i class="far fa-credit-card"></i>
+                              <i class="bi bi-arrow-right"></i>
+                           </div>
+                        </a>
+                     </li>
+                     <li>
+                        <h5>Checkout/Shipping</h5>
+                        <div class="arrow-right">
+                           <i class="fas fa-shipping-fast"></i>
+                           <i class="bi bi-arrow-right"></i>
+                        </div>
+                     </li>
+                     <li class="active">
+                        <h5>Shipping && Order <br>Review</h5>
+                        <div class="arrow-right">
+                           <i class="fas fa-hand-holding-usd"></i>
+                           <i class="bi bi-arrow-right"></i>
+                        </div>
+                     </li>
+                     <li>
+                        <h5>Payment</h5>
+                        <div class="arrow-right">
+                           <i class="fas fa-file-invoice"></i>
+                           <i class="bi bi-arrow-right"></i>
+                        </div>
+                     </li>
+
+
+                  </ul>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+   <div class="shipping-method login-area registation">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-12">
+               <div class="shipping-methods register-right form-container sign-up" style="width: 900px; margin: auto;">
+                  <table class="table table-striped table-responsive" width="600">
+                     <h2 class="mb-4 text-center">Shipping Details</h2>
+                     <tbody>
+                        <tr>
+                           <th>Shipping Name: </th>
+                           <td>{{ shipping_info.shipping_full_name.value }}</td>
+                        </tr>
+                        <tr>
+                           <th>Shipping Email: </th>
+                           <td>{{ shipping_info.shipping_email.value }}</td>
+                        </tr>
+                        <tr>
+                           <th>Shipping Phone Number: </th>
+                           <td>{{ shipping_info.shipping_phone_number.value }}</td>
+                        </tr>
+                        <tr>
+                           <th>Shipping Address1: </th>
+                           <td>{{ shipping_info.shipping_address1.value }}</td>
+                        </tr>
+                        <tr>
+                           <th>Shipping Address2: </th>
+                           <td>{{ shipping_info.shipping_address2.value }}</td>
+                        </tr>
+                        <tr>
+                           <th>City: </th>
+                           <td>{{ shipping_info.shipping_city.value }}</td>
+                        </tr>
+                        <tr>
+                           <th>State: </th>
+                           <td>{{ shipping_info.shipping_state.value }}</td>
+                        </tr>
+                        <tr>
+                           <th>Zipcode: </th>
+                           <td>{{ shipping_info.shipping_zip_code.value }}</td>
+                        </tr>
+                        <tr>
+                           <th>Country: </th>
+                           <td>{{ shipping_info.shipping_country.value }}</td>
+                        </tr>
+
+                     </tbody>
+                     <tfoot>
+                        <tr>
+                           <td><a href="{% url 'payments:checkout' %}" class="btn-style-1 text-white"> Update Shipping
+                                 Details</a>
+                           </td>
+                        </tr>
+                     </tfoot>
+                  </table>
+
+
+                  <table class="table table-striped" width="600">
+                     <h2 class="mb-4 text-center">Order Details</h2>
+                     <tbody>
+                        <tr>
+                           <th>Product Name</th>
+                           <th>Quantity</th>
+                           <th>Price</th>
+                           <th>SubTotal</th>
+                           <th>Action</th>
+                        </tr>
+                        {% for product in cart_products %}
+
+                        <tr>
+                           <td>{{product.name}}</td>
+                           <!-- Quantity -->
+                           {% for key, value in quantities.items %}
+                           {% if key == product.id|slugify %}
+                           <td>{{value}}</td>
+                           {% endif %}
+                           {% endfor %}
+
+                           <td>{{product.price}}</td>
+                           <td>{{ product.sub_total }} TK</td>
+                           <td><a href="{% url 'cart:cart_detail' %}" class="btn-style-1 update-cart text-white">
+                                 Update</a>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th></th>
+                           <td></td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                     <tfoot>
+                        <tr>
+                           <th></th>
+                           <th></th>
+                           <th>Total </th>
+                           <th>{{totals}}</th>
+                           <th></th>
+                        </tr>
+
+
+                     </tfoot>
+                  </table>
+                  <a href="{% url 'payments:payment_view'%}" class="btn-style-1 text-white">Pay Now</a>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+</section>
+
+<script>
+   document.querySelector('#shipping-form').addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent default form submission
+
+      const form = this;
+      const formData = new FormData(form);
+
+      // Send the data via AJAX to the server for validation
+      fetch("{% url 'payments:validate_shipping_form' %}", {
+         method: 'POST',
+         body: formData,
+         headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value // Include CSRF token
+         }
+      })
+         .then(response => response.json())
+         .then(data => {
+            // Clear previous error messages
+            document.querySelectorAll('.error').forEach(errorSpan => {
+               errorSpan.textContent = '';
+            });
+
+            if (data.success) {
+               // If the form is valid, submit it or proceed further
+               alert("Form is valid. Proceeding...");
+               form.submit(); // Submit the form or navigate to the next step
+            } else if (data.errors) {
+               // Handle validation errors
+               for (const [field, errorMessages] of Object.entries(data.errors)) {
+                  // Find the error span related to the field
+                  const errorSpan = document.getElementById(`error-${field}`);
+                  if (errorSpan) {
+                     errorSpan.textContent = errorMessages.join(', ');
+                  }
+               }
+            }
+         })
+         .catch(error => {
+            console.error('Error:', error);
+         });
+   });
+</script>
+
+
+
+{% endblock %}

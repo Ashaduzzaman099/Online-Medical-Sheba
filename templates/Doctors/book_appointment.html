@@ -1,0 +1,97 @@
+{% extends 'base.html' %} {% block content %} {% if messages %}
+<div>
+  {% for message in messages %}
+  <div class="alert alert-danger">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="container mt-5">
+  <h2>
+    Book an Appointment with <br />
+    Dr. {{ doctor.user.full_name }}
+  </h2>
+  <hr />
+</div>
+
+<div class="container_book">
+  <div class="book_info">
+    <h4>Fill in Your Appointment Details</h4>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="hospital">Hospital</label>
+        <input
+          type="text"
+          id="hospital"
+          name="hospital"
+          class="form-control"
+          value="{{ doctor.hospital }}"
+          readonly
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="consultation_type">Consultation Type</label>
+        {{ form.consultation_type }}
+      </div>
+      <div class="form-group">
+        <label for="appointment_type">Appointment Type</label>
+        {{ form.appointment_type }}
+      </div>
+      <div class="form-group">
+        <label for="appointment_date">Date</label>
+        {{ form.appointment_date }}
+      </div>
+      <div class="form-group">
+        <label for="time_slot">Time Slot</label>
+        <select name="time_slot" class="form-control">
+          {% for slot in availability_details %}
+          <option
+            value="{{ slot.start_time }} - {{ slot.end_time }} {{ slot.am_pm }}"
+          >
+            {{ slot.day }}: {{ slot.start_time }} - {{ slot.end_time }} {{
+            slot.am_pm }}
+          </option>
+          {% empty %}
+          <option disabled>No time slots available</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price (USD)</label>
+        <input
+          type="text"
+          id="price"
+          name="price"
+          class="form-control"
+          value="0"
+        />
+      </div>
+
+      <button type="submit" class="btn-style-3">Book Appointment</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Update price dynamically based on appointment type selection
+  document.addEventListener("DOMContentLoaded", () => {
+    const appointmentTypeField = document.querySelector("#id_appointment_type");
+    const priceField = document.querySelector("#price");
+
+    const priceMapping = {
+      new_patient: 5,
+      follow_up: 2,
+      report_show: 0,
+    };
+
+    appointmentTypeField.addEventListener("change", () => {
+      const selectedType = appointmentTypeField.value;
+      priceField.value = priceMapping[selectedType] || 0;
+    });
+  });
+</script>
+
+{% endblock %}

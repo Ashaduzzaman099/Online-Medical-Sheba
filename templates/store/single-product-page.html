@@ -1,0 +1,243 @@
+{% extends 'base.html' %} {% block title %} {{ user.username }} Medicine
+{%endblock %} {% block content %} {% load static %}
+
+<!-- Start Pre Order Area -->
+<section class="pre-order-area">
+   <div class="container">
+      <div class="row gx-5">
+         <div class="col-lg-6">
+            <div class="zoom-img">
+               <img id="zoom-03" src="{{ product.thumbnail.url }}" alt="{{ product.name }}"
+                  data-zoom-image="{{ product.thumbnail.url }}" />
+            </div>
+            <!-- <div class="col-md-12 thumbnail">
+               <ul id="thumbnail-gall" class="owl-carousel owl-theme">
+                  {% for image in product.images.all %}
+                  <li>
+                     <a href="#" class="active" data-image="{{ image.url }}" data-zoom-image="{{ image.url }}">
+                        <img src="{{ image.url }}" alt="{{ product.name }}" />
+                     </a>
+                  </li>
+                  {% empty %}
+                  <li>
+                     <a href="#" class="active" data-image="{% static 'images/products/placeholder.jpg' %}"
+                        data-zoom-image="{% static 'images/products/placeholder.jpg' %}">
+                        <img src="{% static 'images/products/placeholder.jpg' %}" alt="No image" />
+                     </a>
+                  </li>
+                  {% endfor %}
+               </ul>
+            </div> -->
+         </div>
+
+
+
+         <div class="col-lg-6">
+            <div class="selected-product-details">
+               <h2 class="product-name">{{ product.name }}</h2>
+               <div class="rateing">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="far fa-star"></i>
+                  <span>( 5 review )</span>
+               </div>
+               <p class="product-price">{{ product.price }} TK</p>
+               <p>{{ product.short_description }}</p>
+               <form action="#">
+                  <div class="barnd">
+                     <p>Power:{{ product.power }} mg</p>
+
+
+                  </div>
+               </form>
+
+               <!-- =============== -->
+               <div class="button-and-plus-minus">
+
+                  {% csrf_token %}
+                  <div class="form-group">
+                     <label for="qty-select">Select Quantity:</label>
+                     <select id="qty-select" name="qtyBox">
+                        <option value="1">1</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="7">7</option>
+                        <option value="12">12</option>
+                        <option value="box">1 Box</option>
+                     </select>
+                  </div>
+
+                  <p id="total-price">Total: {{ product.price }} TK</p>
+
+                  <button id="cart-add" value="{{ product.id }}" type="button" class="btn-style-1">Add to Cart</button>
+                  <a href="#" class="btn-style-1">Back to Store</a>
+               </div>
+
+               <!-- <div class="wiselist-and-compare">
+                  <ul>
+                     <li><a href="#"><i class="far fa-eye"></i><span>Add to Wiselist</span></a></li>
+
+                  </ul>
+               </div> -->
+
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+<!-- End Pre Order Area -->
+<!-- Start Nav Tabs Area -->
+<section class="nav-tabs-area">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-12">
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+               <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-desc-tab" data-bs-toggle="pill" data-bs-target="#pills-desc"
+                     type="button" role="tab" aria-controls="pills-desc" aria-selected="true">Description</button>
+               </li>
+               <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-info-tab" data-bs-toggle="pill"
+                     data-bs-target="#pills-additional-info" type="button" role="tab"
+                     aria-controls="pills-additional-info" aria-selected="false">Additional Information</button>
+               </li>
+               <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-reviews-tab" data-bs-toggle="pill" data-bs-target="#pills-reviews"
+                     type="button" role="tab" aria-controls="pills-reviews" aria-selected="false">Reviews</button>
+               </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="pills-tabContent">
+               <!-- Description Tab -->
+               <div class="tab-pane fade show active" id="pills-desc" role="tabpanel" aria-labelledby="pills-desc-tab">
+                  <div class="product-description">
+                     <p>{{ product.description }}</p>
+
+                  </div>
+               </div>
+
+               <!-- Additional Information Tab -->
+               <div class="tab-pane fade" id="pills-additional-info" role="tabpanel" aria-labelledby="pills-info-tab">
+                  <div class="product-info">
+                     <table>
+                        <tr>
+                           <td><b>Name</b></td>
+                           <td>Test Name</td>
+                        </tr>
+                        <tr>
+                           <td><b>Company</b></td>
+                           <td>ABC</td>
+                        </tr>
+                        <tr>
+                           <td><b>Generic Name</b></td>
+                           <td>XYUX</td>
+                        </tr>
+                        <tr>
+                           <td><b>Strength</b></td>
+                           <td>500mg</td>
+                        </tr>
+                        <tr>
+                           <td><b>Category</b></td>
+                           <td>CAP</td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+
+               <!-- Reviews Tab -->
+               <div class="tab-pane fade" id="pills-reviews" role="tabpanel" aria-labelledby="pills-reviews-tab">
+                  <div class="reviews-tab-content">
+                     <!-- Reviewer Content -->
+                     <div class="after-submit-review">
+                        <div class="reviewer-img"><img src="assets/images/h.png" alt="Reviewer"></div>
+                        <div class="reviewer-details">
+                           <p class="name">Hasibur Rahman</p>
+                           <p class="date">11/7/24</p>
+                           <div class="rating"><i class="fas fa-star"></i>...</div>
+                           <p class="desc">Good product. Good service.</p>
+
+                        </div>
+                     </div>
+                     <!-- Review Form -->
+                     <div class="before-review-form">
+                        <div class="rateing"><span>Your Rating:</span><i class="fas fa-star"></i>...</div>
+                        <form>
+                           <div class="review-input-item">
+                              <label for="name">Name *</label>
+                              <input type="text" name="name" id="name">
+                              <label for="email">Email *</label>
+                              <input type="email" name="email" id="email">
+                           </div>
+                           <div class="review-input-item">
+                              <label for="text">Your Review *</label>
+                              <textarea name="text" id="text" cols="30"></textarea>
+                           </div>
+                           <div class="agree-check-box">
+                              <input type="checkbox" id="check-box">
+                              <label for="check-box">Save my name, email, and website in this browser...</label>
+                           </div>
+                           <div class="submit">
+                              <input class="btn-style-1" type="submit" value="Submit">
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+</section>
+
+<!-- End Nav Tabs Area -->
+
+
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+      const productPrice = parseFloat("{{ product.price }}");
+      const selectQuantity = document.getElementById('qty-select');
+      const totalPriceEl = document.getElementById('total-price');
+
+      selectQuantity.addEventListener('change', function () {
+         let quantity = selectQuantity.value;
+
+         if (quantity === 'box') {
+            quantity = 10;
+         }
+         const totalPrice = productPrice * parseInt(quantity);
+         totalPriceEl.textContent = `Total: ${totalPrice} TK`;
+      });
+
+      $('#cart-add').click(function (e) {
+         e.preventDefault();
+         let quantity = selectQuantity.value;
+         if (quantity === 'box') {
+            quantity = 10;
+         }
+
+         $.ajax({
+            type: 'POST',
+            url: "{% url 'cart:cart_add' %}",
+            data: {
+               product_id: $(this).val(),
+               quantity: quantity,
+               csrfmiddlewaretoken: '{{ csrf_token }}',
+               action: 'post',
+            },
+            success: function (json) {
+
+               $('#cart_quantity').text(`(${json.quantity}) items`);
+            },
+            error: function () {
+               alert("An error occurred while adding the product to the cart.");
+            },
+         });
+      });
+   });
+</script>
+{% endblock %}

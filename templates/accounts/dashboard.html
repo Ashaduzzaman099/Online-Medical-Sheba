@@ -1,0 +1,141 @@
+{% extends 'base.html' %} {% block title %} {{ user.username }} Dashboard
+{%endblock %} {% block content %} {% load static %}
+<section class="section-padding">
+  <!-- Dashboard Start -->
+  <div class="container">
+    <div class="row">
+      <!-- Sidebar Start -->
+      <div class="col-md-3">
+        <div class="sidbar99">
+          <div class="myDashboard99 d-flex align-items-center mb-4">
+            <img
+              src="{% if user.profile_pic %}{{ user.profile_pic.url }}{% else %}{% static 'images/avater.webp' %}{% endif %}"
+              alt="User Icon"
+            />
+            <div class="myDashboardinfo99 ml-3">
+              {% if user.role == 'doctor' %}
+              <h4>Doctor Dashboard</h4>
+              {% else %}
+              <h5>User/Patient Dashboard</h5>
+              {% endif %}
+              <p>{{ user.user_name }}</p>
+            </div>
+          </div>
+          <div class="Dashboard_info99">
+            <ul class="list-unstyled">
+              <li>
+                <a href="{% url 'accounts:dashboard_view' %}"
+                  >Profile Setting</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'accounts:change_password_view' %}"
+                  id="changePasswordButton"
+                  >Change Password</a
+                >
+              </li>
+              {% if user.role == 'doctor' %}
+              <li>
+                <a href="{% url 'Doctors:manage_appointments' %}"
+                  >Manage Appointments</a
+                >
+              </li>
+              <li><a href="">Patient Records</a></li>
+              <li>
+                <a href="{% url 'Doctors:add_doctor_profile' %}"
+                  >Additional Info</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'Doctors:writePrecription' %}"
+                  class="dropdown-toggle99"
+                  >Write Prescription</a
+                >
+              </li>
+              {% else %}
+              <li><a href="">My Appointments</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Sidebar End -->
+
+      <!-- Main Content Start -->
+      <div class="col-md-9">
+        {% block user_info %}
+        <div class="patient_card d-flex align-items-center">
+          <img
+            src="{% if user.profile_pic %}{{ user.profile_pic.url }}{% else %}{% static 'images/avater.webp' %}{% endif %}"
+            alt="User Icon"
+          />
+          <div class="Patient_information">
+            <a
+              href="{% url 'accounts:profile_update_view' %}"
+              class="float-right Edit btn-style-1"
+              id="editButton"
+              >Update Profile</a
+            >
+            <h5>{{ user.full_name }}</h5>
+            <p>Number: {{ user.phone_number }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>Birth of Date: {{ user.date_of_birth|default:"N/A" }}</p>
+            <p>Gender: {{ user.gender|default:"N/A (Set your Gender)" }}</p>
+            <p>
+              Blood: {{ user.blood_group|default:"N/A (Do you want to Blood?)"}}
+            </p>
+          </div>
+        </div>
+        {% endblock %}
+
+        <!-- Edit Form Start (hidden by default, toggle with JS) -->
+        {% block form_section %}{% endblock %}
+        <!-- Edit Form End -->
+
+        {% comment %} {% block exteral_info %}
+        <div class="row address-area mt-4">
+          <div class="col-md-12">
+            <div class="FamilyMembers">
+              <div class="d-flex justify-content-between align-items-center">
+                <p>Family</p>
+                <a href="#" class="btn-style-1">+ Add new Member</a>
+              </div>
+            </div>
+            <div class="sub mt-3">
+              <div class="UserinfoShow d-flex justify-content-between">
+                <p>Name</p>
+                <p>Phone</p>
+                <p>Age</p>
+                <p>Sex</p>
+                <p>Address</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endblock %} {% endcomment %}
+      </div>
+      <!-- Main Content End -->
+    </div>
+  </div>
+</section>
+
+<script>
+  // JavaScript to toggle dropdown visibility on click
+  document.addEventListener("DOMContentLoaded", function () {
+    const dropdown = document.querySelectorAll(".dropdown-toggle99");
+
+    dropdown.forEach((item) => {
+      item.addEventListener("click", function () {
+        const dropdownMenu = this.nextElementSibling; // Get the next <ul> (dropdown menu)
+
+        // Toggle visibility of the dropdown menu
+        dropdownMenu.style.display =
+          dropdownMenu.style.display === "block" ? "none" : "block";
+      });
+    });
+  });
+</script>
+
+{% endblock %}

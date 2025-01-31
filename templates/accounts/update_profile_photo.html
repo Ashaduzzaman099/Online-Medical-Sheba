@@ -1,0 +1,88 @@
+{% extends 'accounts/dashboard.html' %}
+
+
+<div class="col-md-9">
+   {% block user_info %}
+   {% load static %}
+   <div class="editForm card-form update-profile">
+      <h2 class="my-4">Update Profile Photo</h2>
+
+      <!-- Form to update profile photo -->
+      <form method="post" enctype="multipart/form-data">
+         {% csrf_token %}
+         <div class="form-group">
+
+
+            <!-- Dynamic preview of image upload -->
+            <div>
+               <img id="profilePicPreview"
+                  src="{% if user.profile_pic %}{{ user.profile_pic.url }}{% else %}{% static 'images/avater.webp' %}{% endif %}"
+                  class="img-thumbnail mb-3  shadow" width="150" height="150" alt="Profile Preview">
+            </div>
+
+            <div>
+               Currently:
+               <a
+                  href="{% if user.profile_pic %}{{ user.profile_pic.url }}{% else %}{% static 'images/avater.webp' %}{% endif %}">
+                  {% if user.profile_pic %}
+                  {{ user.profile_pic.url }}
+                  {% else %}
+                  {% static 'images/avater.webp' %}
+                  {% endif %}
+               </a>
+            </div>
+
+
+
+
+
+
+         </div>
+         <div class="form-group">
+            <input type="checkbox" name="profile_pic-clear" id="profile_pic-clear_id">
+            <label for="profile_pic-clear_id">Clear</label><br>
+         </div>
+         <div class="form-group">
+            <label for="profile_pic" class="form-label">Choose New Profile Photo</label><br>
+            <input type="file" class="form-control" name="profile_pic" accept="image/*" id="id_profile_pic">
+         </div>
+
+         <button type="submit" class="btn-style-1 btn btn-primary">Update Photo</button>
+         <a href="/user/dashboard/" class="btn-style-1 ml-2">Back to Profile</a>
+      </form>
+   </div>
+
+</div>
+
+
+<script>
+   // JavaScript to dynamically preview the image before upload
+   document.getElementById('id_profile_pic').addEventListener('change', function (event) {
+      const preview = document.getElementById('profilePicPreview');
+      const file = event.target.files[0];
+
+      if (file) {
+         const reader = new FileReader();
+
+         reader.onload = function (e) {
+            preview.src = e.target.result;
+         }
+
+         reader.readAsDataURL(file);
+      } else {
+         preview.src = '{% if user.profile_pic %}{{ user.profile_pic.url }}{% else %}{% static "images/avater.webp" %}{% endif %}';
+      }
+   });
+
+   // Clear photo checkbox functionality
+   document.getElementById('profile_pic-clear_id').addEventListener('change', function () {
+      const fileInput = document.getElementById('id_profile_pic');
+      const preview = document.getElementById('profilePicPreview');
+
+      if (this.checked) {
+         fileInput.value = null; // Reset the file input
+         preview.src = '{% static "images/avater.webp" %}'; // Reset to the default image
+      }
+   });
+</script>
+{% endblock %}

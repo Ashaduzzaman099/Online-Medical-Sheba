@@ -1,0 +1,126 @@
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% load static %}
+{% block content %}
+
+
+<script src="{% static 'js/advanceSearch.js' %}"></script>
+<!-- Start Doctor List Section -->
+<section>
+  <div class="contain-Wrapping">
+    <!-- Title -->
+    <div class="title-Doctor">
+      <h2>Doctor List</h2>
+    </div>
+
+   <!-- Search Box -->
+<div class="search-container">
+  <!-- Default Search -->
+  <div class="search">
+    <i class="fas fa-search"></i>
+    <input
+      type="search"
+      name="search"
+      id="search"
+      placeholder="Search by doctor name or specialization..."
+      class="search-box"
+      onkeyup="searchHospitals()"
+    />
+  </div>
+
+  <!-- Advanced Search Toggle -->
+  <button id="toggle-advanced-search" onclick="toggleAdvancedSearch()">
+    Advanced Search
+  </button>
+
+  <!-- Advanced Search Filters (Hidden by Default) -->
+  <div id="advanced-search" class="advanced-filters" style="display: none;">
+    <!-- Filter by Hospital -->
+    <div class="filter">
+      <label for="hospital">Hospital:</label>
+      <input
+        type="text"
+        id="hospital"
+        name="hospital"
+        placeholder="Enter hospital name"
+        onkeyup="searchHospitals()"
+      />
+    </div>
+
+    <!-- Filter by Location -->
+    <div class="filter">
+      <label for="location">Location:</label>
+      <input
+        type="text"
+        id="location"
+        name="location"
+        placeholder="Enter city or area"
+        onkeyup="searchHospitals()"
+      />
+    </div>
+
+    <!-- Filter by Availability -->
+    <div class="filter">
+      <label for="availability">Day of Availability:</label>
+      <select id="availability" name="availability" onchange="searchHospitals()">
+        <option value="">Any Day</option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+
+  <div class="containers">
+    <!-- Left Side: Doctor List -->
+    <div class="doctor-list">
+        <!-- Doctor Cards Grid -->
+        <div class="doctor-grid">
+            <!-- Doctor Card -->
+            {% for detail in doctor_details %}
+            <div class="doctor-card">
+              <img src="{% if  detail.user.profile_pic %}{{  detail.user.profile_pic.url }}{% else %}{% static 'images/avatar.webp' %}{% endif %}" alt="Doctor Photo" />
+
+                <div class="doctor-details">
+                    <h2>{{ detail.user.full_name }}</h2>
+                    <h2>{{ detail.doctor.title }}</h2>
+                    <p>{{ detail.doctor.about|truncatewords:20 }}</p>
+                    <p>{{ detail.doctor.hospital.name }}</p>
+                    <p>{{ detail.doctor.experience }} Years of Experience Overall</p>
+                    <p class="availability">
+                        Availability: <strong>{{ detail.doctor.hospital.name }}</strong>
+                    </p>
+                    <div class="box-style">
+                        <p>{{ detail.doctor.specialties }}</p>
+                    </div>
+                    <p>{{ detail.doctor.address }}</p>
+                    <div class="specializations">
+                        {% for specialization in detail.doctor.specializations.all %}
+                        <span>{{ specialization.name }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="book-appointment">
+                        <input type="date" id="appointment-date" name="appointment-date" />
+                        <button>Book Appointment</button>
+                        <!-- View Profile Button with Dynamic Link -->
+                         <!-- View Profile Button with Dynamic Link -->
+                         <button 
+                         class="view_Profile" 
+                         onclick="window.location.href='{% url 'Doctors:doctor_profile' detail.doctor.id %}'">
+                         View Profile
+                       </button>
+                       
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</section>
+
+{% endblock %}

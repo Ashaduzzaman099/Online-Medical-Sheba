@@ -1,0 +1,339 @@
+{% extends 'accounts/dashboard.html' %}
+<!-- Additional Information-->
+<div class="col-md-9">
+  {% block user_info %}
+  <div class="additional-Wrapping">
+    <div class="editForm card-form update-profile">
+      <h2 class='text-center'>Additional Information</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        <!-- Title -->
+        <div class="form-group">
+          <label for="id_title">Title:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="id_title"
+            name="title"
+            placeholder="Enter title"
+            required
+          />
+        </div>
+        
+
+        <!-- About -->
+        <div class="form-group">
+          <label for="id_about">About:</label>
+          <textarea
+            class="form-control"
+            id="id_about"
+            name="about"
+            rows="4"
+            placeholder="Write about yourself..."
+            required
+          ></textarea>
+        </div>
+
+        <!-- Hospital List-->
+
+        <div class="form-group">
+          <label for="id_Hospital">Hospital:</label>
+          <select id="id_Hospital" name="hospital" class="form-control">
+            <option value="" selected disabled>Select a hospital</option>
+            {% for hospital in hospital_list %}
+            <option value="{{ hospital.id }}">{{ hospital.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Specialties -->
+        <div class="form-group">
+          <label for="id_specialties">Specialties:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="id_specialties"
+            name="specialties"
+            placeholder="Enter specialties (e.g., Cardiology, Pediatrics)"
+            data-role="tagsinput"
+          />
+        </div>
+
+        <!-- Experience -->
+        <div class="form-group">
+          <label for="id_experience">Experience (Years):</label>
+          <select id="id_experience" name="experience" class="form-control">
+            <option value="" selected disabled>Select Experience</option>
+            <!-- Options will be dynamically generated -->
+          </select>
+          <span class="text-danger"></span>
+        </div>
+
+        <!-- Doctor License Number -->
+        <div class="form-group">
+          <label for="id_license_number">License Number:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="id_license_number"
+            name="license_number"
+            placeholder="Enter license number"
+            required
+          />
+        </div>
+
+        <!--Education Start-->
+        <div class="form-group">
+          <label for="education">Education:</label>
+          <div id="education-container">
+            <div class="education-item">
+              <div class="form-group">
+                <label for="institution_name">Institution Name:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="institution_name[]"
+                  placeholder="Enter institution name"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="degree_name">Degree Name:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="degree_name[]"
+                  placeholder="Enter degree name"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="result">Result (Division):</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="result[]"
+                  placeholder="Enter result (e.g., First Division, 3.5 GPA)"
+                  required
+                />
+              </div>
+
+              <button type="button" class="btn btn-danger remove-education">
+                Remove
+              </button>
+              <hr />
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-success" id="add-education">
+            Add More Education
+          </button>
+        </div>
+
+        <!--Education End-->
+        <div id="availability-section">
+          <table id="availabilityTable" class="table">
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>From</th>
+                <th>To</th>
+                <th>AM/PM</th>
+                <th>Available</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <select class="form-control" name="availability_day[]" required>
+                    <option disabled selected>Select Day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="time"
+                    class="form-control"
+                    name="availability_from[]"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="time"
+                    class="form-control"
+                    name="availability_to[]"
+                    required
+                  />
+                </td>
+                <td>
+                  <select
+                    class="form-control"
+                    name="availability_ampm[]"
+                    required
+                  >
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    name="availability_available[]"
+                    value="on"
+                  />
+                </td>
+                <td>
+                  <button type="button" class="btn btn-danger removeRow">
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button id="addSlot" type="button" class="btn btn-primary">
+            Add Slot
+          </button>
+        </div>
+
+        <script>
+          // Reference to the Add Slot button and the table body
+          const addSlotButton = document.getElementById("addSlot");
+          const availabilityTableBody = document
+            .getElementById("availabilityTable")
+            .querySelector("tbody");
+
+          // Event listener for Add Slot button
+          addSlotButton.addEventListener("click", () => {
+            // Add a new row to the table
+            const newRow = `
+            <tr>
+              <td>
+                <select class="form-control" name="availability_day[]" required>
+                  <option disabled selected>Select Day</option>
+                  <option value="Monday">Monday</option>
+                  <option value="Tuesday">Tuesday</option>
+                  <option value="Wednesday">Wednesday</option>
+                  <option value="Thursday">Thursday</option>
+                  <option value="Friday">Friday</option>
+                  <option value="Saturday">Saturday</option>
+                  <option value="Sunday">Sunday</option>
+                </select>
+              </td>
+              <td>
+                <input type="time" class="form-control" name="availability_from[]" required />
+              </td>
+              <td>
+                <input type="time" class="form-control" name="availability_to[]" required />
+              </td>
+              <td>
+                <select class="form-control" name="availability_ampm[]" required>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </td>
+              <td>
+                <input type="checkbox" name="availability_available[]" value="on" />
+              </td>
+              <td>
+                <button type="button" class="btn btn-danger removeRow">Remove</button>
+              </td>
+            </tr>
+          `;
+            availabilityTableBody.insertAdjacentHTML("beforeend", newRow);
+          });
+
+          // Event listener for Remove buttons within the table
+          availabilityTableBody.addEventListener("click", (e) => {
+            if (e.target.classList.contains("removeRow")) {
+              // Remove the row that the Remove button belongs to
+              e.target.closest("tr").remove();
+            }
+          });
+        </script>
+
+        <!-- Address -->
+        <div class="form-group">
+          <label for="id_address">Address:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="id_address"
+            name="address"
+            placeholder="Enter your address"
+            required
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <div class="formActions">
+          <button type="submit" class="btn-style-1">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const educationContainer = document.getElementById("education-container");
+    const addEducationButton = document.getElementById("add-education");
+
+    // Add new education item
+    addEducationButton.addEventListener("click", function () {
+      const newEducationItem = document
+        .querySelector(".education-item")
+        .cloneNode(true);
+
+      // Clear input values in the cloned fields
+      newEducationItem
+        .querySelectorAll("input")
+        .forEach((input) => (input.value = ""));
+      educationContainer.appendChild(newEducationItem);
+
+      // Reattach the remove button event listener
+      attachRemoveEvent();
+    });
+
+    // Attach event to remove button
+    function attachRemoveEvent() {
+      const removeButtons = document.querySelectorAll(".remove-education");
+      removeButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+          if (document.querySelectorAll(".education-item").length > 1) {
+            this.parentElement.remove();
+          } else {
+            alert("At least one education entry must be present.");
+          }
+        });
+      });
+    }
+
+    attachRemoveEvent(); // Initial attach for the default item
+  });
+</script>
+
+<script>
+  // JavaScript to dynamically populate the Experience dropdown
+  const experienceSelect = document.getElementById("id_experience");
+  const experienceYears = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, "35+"];
+
+  experienceYears.forEach((year) => {
+    const option = document.createElement("option");
+    option.value = year;
+    option.textContent =
+      year + (typeof year === "number" ? " year" + (year > 1 ? "s" : "") : "");
+    experienceSelect.appendChild(option);
+  });
+</script>
+{% endblock %}

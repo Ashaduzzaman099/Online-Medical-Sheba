@@ -1,0 +1,139 @@
+{% extends 'accounts/dashboard.html' %}
+<!-- Change Password Form Start (visible by default if JS is not involved) -->
+<div class="col-md-9">
+    {% block user_info %}
+    <div class="write-prescription-area">
+        <h2 class="text-center">Write Prescription</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="patient">Select Appointment:</label>
+                <select name="patient" id="patient" class="form-control"
+                    required>
+
+                    {% for appointment in appointments %}
+                    <option value="{{ appointment.patient_id }}">
+                        {% for patient in patients %}
+                        {% if patient.id == appointment.patient_id %}
+                        {{ patient.full_name }}
+                        {% endif %}
+                        {% endfor %}
+                        {{appointment.appointment_type}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="doctor_comment">Doctor's Comment:</label>
+                <textarea name="doctor_comment" id="doctor_comment"
+                    class="form-control"></textarea>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Medicine Name</th>
+                        <th>Breakfast</th>
+                        <th>Lunch</th>
+                        <th>Dinner</th>
+                        <th>Meal Remark</th>
+                        <th>Additional Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="medicine-table-body">
+                    <tr data-medicine-index="1">
+                        <td>
+                            <input type="text" name="medicine_name_1"
+                                class="form-control" placeholder="Medicine Name"
+                                required />
+                        </td>
+                        <td>
+                            <input type="checkbox" name="breakfast_dosage_1" />
+                        </td>
+                        <td>
+                            <input type="checkbox" name="lunch_dosage_1" />
+                        </td>
+                        <td>
+                            <input type="checkbox" name="dinner_dosage_1" />
+                        </td>
+                        <td>
+                            <select name="meal_remark_1" class="form-control">
+                                <option value>-- Select --</option>
+                                <option value="before">Before Meal</option>
+                                <option value="after">After Meal</option>
+                            </select>
+                        </td>
+                        <td>
+                            <textarea name="additional_notes_1"
+                                class="form-control"
+                                placeholder="Additional Notes"></textarea>
+                        </td>
+                        <td>
+                            <button type="button"
+                                class="btn btn-danger remove-medicine">Remove</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <input type="hidden" name="medicine_count" id="medicine_count"
+                value="1" />
+            <button type="button" id="add-medicine" class="btn-style-1">+
+                Add Medicine</button>
+            <button type="submit" class="btn-style-1">Create
+                Prescription</button>
+        </form>
+
+    </div>
+
+    <script>
+        let medicineIndex = 1;
+    
+        // Add new medicine row
+        document.getElementById('add-medicine').addEventListener('click', function () {
+            medicineIndex++;
+            const tableBody = document.getElementById('medicine-table-body');
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('data-medicine-index', medicineIndex);
+            newRow.innerHTML = `
+                <td>
+                    <input type="text" name="medicine_name_${medicineIndex}" class="form-control" placeholder="Medicine Name" required />
+                </td>
+                <td>
+                    <input type="checkbox" name="breakfast_dosage_${medicineIndex}" />
+                </td>
+                <td>
+                    <input type="checkbox" name="lunch_dosage_${medicineIndex}" />
+                </td>
+                <td>
+                    <input type="checkbox" name="dinner_dosage_${medicineIndex}" />
+                </td>
+                <td>
+                    <select name="meal_remark_${medicineIndex}" class="form-control">
+                        <option value="">-- Select --</option>
+                        <option value="before">Before Meal</option>
+                        <option value="after">After Meal</option>
+                    </select>
+                </td>
+                <td>
+                    <textarea name="additional_notes_${medicineIndex}" class="form-control" placeholder="Additional Notes"></textarea>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger remove-medicine">Remove</button>
+                </td>
+            `;
+            tableBody.appendChild(newRow);
+            document.getElementById('medicine_count').value = medicineIndex;
+        });
+    
+        // Remove medicine row
+        document.getElementById('medicine-table-body').addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-medicine')) {
+                event.target.closest('tr').remove();
+            }
+        });
+    </script>
+
+    {% endblock %}

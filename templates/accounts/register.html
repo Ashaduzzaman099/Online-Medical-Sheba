@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="login-area registation">
+   <div class="container" id="container">
+      <div class="row">
+         <div class="col-md-6">
+            <div class="register-left toggle-container">
+               <div class="toggle">
+                  <div class="toggle-panel toggle-left">
+                     <h1 class="text-white">Welcome Back!</h1>
+                     <p class="text-white">Enter your personal
+                        details to use all site features</p>
+                     <a class="btn-style-2" href="{% url 'accounts:login_view' %}">Sign
+                        In</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="col-md-6">
+            <div class="register-right form-container sign-up">
+               <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  <h2 class="mb-4 text-center">Create New Account</h2>
+                  <div class="social-icons">
+                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                     <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                     <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                  </div>
+
+                  <div class="register-input-wrapper">
+                     <div class="single-box d-flex">
+                        <div class="role-field form-group">
+                           <label for="user">Role</label>
+                           {{ form.role }}
+                           {% if form.role.errors %}
+                           <span class="text-danger">{{ form.role.errors.0 }}</span>
+                           {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                           <label for="full_name">Full Name</label>
+                           {{ form.full_name }}
+                           {% if form.full_name.errors %}
+                           <span class="text-danger">{{ form.full_name.errors.0 }}</span>
+                           {% endif %}
+                        </div>
+                     </div>
+                     <div class="single-box d-flex g-2">
+                        <div class="form-group">
+                           <label for="user_name">Username</label>
+                           {{ form.user_name }}
+                           {% if form.user_name.errors %}
+                           <span class="text-danger">{{ form.user_name.errors.0 }}</span>
+                           {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                           <label for="email">Email</label>
+                           {{ form.email }}
+                           {% if form.email.errors %}
+                           <span class="text-danger">{{ form.email.errors.0 }}</span>
+                           {% endif %}
+                        </div>
+                     </div>
+                     <div class="single-box d-flex">
+                        <div class="form-group">
+                           <label for="phone_number">Phone Number</label>
+                           {{ form.phone_number }}
+                           {% if form.phone_number.errors %}
+                           <span class="text-danger">{{ form.phone_number.errors.0 }}</span>
+                           {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                           <label for="date_of_birth">Date of Birth</label>
+                           {{ form.date_of_birth }}
+                           {% if form.date_of_birth.errors %}
+                           <span class="text-danger">{{ form.date_of_birth.errors.0 }}</span>
+                           {% endif %}
+                        </div>
+                     </div>
+                     <div class="single-box d-flex">
+                        <div class="form-group">
+                           <label for="password">Password</label>
+                           {{ form.password }}
+                           {% if form.password.errors %}
+                           <span class="text-danger">{{ form.password.errors.0 }}</span>
+                           {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                           <label for="password2">Confirm Password</label>
+                           {{ form.password2 }}
+                           {% if form.password2.errors %}
+                           <span class="text-danger">{{ form.password2.errors.0 }}</span>
+                           {% endif %}
+                        </div>
+                     </div>
+
+
+
+
+
+
+
+                  </div>
+
+                  {% if form.errors %}
+                  <div class="alert alert-danger">
+                     <strong>Please correct the following errors:</strong>
+                     <ul class="mb-0">
+                        {% for field, errors in form.errors.items %}
+                        <li>{{ field|capfirst }}:
+                           <ul class="list-unstyled mb-0">
+                              {% for error in errors %}
+                              <li>{{ error }}</li>
+                              {% endfor %}
+                           </ul>
+                        </li>
+                        {% endfor %}
+                     </ul>
+                  </div>
+                  {% endif %}
+
+
+
+                  <input type="submit" value="Sign Up">
+               </form>
+
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+{% endblock %}

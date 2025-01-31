@@ -1,0 +1,229 @@
+{% extends 'base.html' %} {% block title %} {{ user.username }} Medicine-store
+{%endblock %} {% block content %} {% load static %}
+
+<!-- Start Shop Area -->
+<section class="shop-area">
+    <div class="container">
+        <div class="row">
+            <div class="title">
+                <h2>Popular Medicine</h2>
+            </div>
+            {% for medicine in medicines %}
+
+            <!-- Single item -->
+            <div class="col-lg-2 col-md-4 col-6 ">
+                <div class="singel-product">
+                    <div class="product-img">
+                        <a
+                            href="{% url 'medicine_store:product_detail' medicine.id medicine.slug %}"><img
+                                src="{{ medicine.thumbnail.url }}"
+                                alt="{{ medicine.name }}"></a>
+                    </div>
+                    <div class="product-name">
+                        <a href="#">
+                            <h4>{{medicine.name}}</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {% empty %}
+            <p>No medicines available at the moment.</p>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+<!-- End Shop Area -->
+<!-- Start Main Shoping Area -->
+<section class="main-shoping-area">
+    <div class="container">
+        <div class="row gx-5">
+            <!-- Filter Options -->
+            <div class="col-md-3 col-sm-4">
+                <div class="shop-product-filter">
+                    <!-- CATEGORIES -->
+                    <div class="categories">
+                        <h3>CATEGORIES</h3>
+                        <ul>
+                            {% for category in categories %}
+                            <li>
+                                <a href="#">
+                                    <p>{{ category.name }}</p>
+                                    <span>{{ category.medicine_count }}
+                                        medicines</span>
+                                </a>
+                            </li>
+                            {% empty %}
+                            <p>No categories available.</p>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                    <div class="pricing-range">
+                        <h3>Price</h3>
+                        <div id="slider-range"></div>
+                        <div class="select-range">
+                            <label for="amount">Range:</label>
+                            <input type="text" id="amount" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Brands -->
+                    <!-- <div class="brands-filter">
+                  <h3>Brands</h3>
+                  <ul>
+                     <li><a href="#"><img src="{% static 'images/brand-logo/1.png' %}" alt="Redbox"></a></li>
+                     <li><a href="#"><img src="{% static 'images/brand-logo/2.png' %}g" alt="Camfire"></a></li>
+                     <li><a href="#"><img src="{% static 'images/products/brand-logo/3.png' %}" alt="BestSound"></a>
+                     </li>
+                     <li><a href="#"><img src="{% static 'images/brand-logo/1.png' %}" alt="Money"></a></li>
+                     <li><a href="#"><img src="{% static 'imagesbrand-logo/4.jpg' %}" alt="Blast"></a></li>
+                     <li><a href="#"><img src="{% static 'images/brand-logo/5.jpg' %}" alt="Minimal"></a></li>
+                  </ul>
+               </div> -->
+
+                </div>
+            </div>
+            <!--End Filter Options -->
+            <!-- Shoping Product Items -->
+            <div class="col-md-9 col-sm-8 all-product-items">
+                <div class="row gy-4">
+
+                    {% for medicine in medicines %}
+                    <!-- Single Shoping Item -->
+                    <div class="col-md-4 col-sm-6 col-6">
+                        <div class="single-shoping-item">
+                            <div class="shoping-product-img">
+                                <a
+                                    href="{% url 'medicine_store:product_detail' medicine.id medicine.slug %}"><img
+                                        src="{{ medicine.thumbnail.url }}"
+                                        alt="Chair"></a>
+                                <!-- On Hover Img after show icon -->
+                                <div class="shoping-hover-icon">
+                                    <ul>
+                                        <li><a class="product-img-popup"
+                                                href="{% static 'images/products/1.jpg' %}"><i
+                                                    class="far fa-eye"></i></a></li>
+                                        <li><a
+                                                href="{% url 'medicine_store:product_detail' medicine.id medicine.slug %}"><i
+                                                    class="fas fa-cart-plus"></i></a></li>
+                                        <li><a href="#"><i
+                                                    class="fas fa-search"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product-details">
+                                <h4>{{ medicine.name }}</h4>
+                                <p>{{ medicine.power }} mg</p>
+                                <p><del></del><span>{{ medicine.price
+                                        }}</span></p>
+                                <a
+                                    href="{% url 'medicine_store:product_detail' medicine.id medicine.slug %}"
+                                    class="add-cart-btn"><i
+                                        class="fas fa-cart-plus"></i>View
+                                    Product</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% empty %}
+                    <p>No medicines available at the moment.</p>
+                    {% endfor %}
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="pagination-wrapper">
+                            <ul>
+                                <li class="active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">.....</a></li>
+                                <li><a href="#">11</a></li>
+                                <li><a href="#">12</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Main Shoping Area -->
+
+<script>
+   $(function () {
+      $("#slider-range").slider({
+         range: true,
+         min: 0,
+         max: 100,
+         values: [0, 100],
+         slide: function (event, ui) {
+            $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+
+            // Send AJAX request to filter products
+            $.ajax({
+               url: "{% url 'medicine_store:filter_products' %}",
+               method: "GET",
+               data: {
+                  min_price: ui.values[0],
+                  max_price: ui.values[1],
+               },
+               success: function (response) {
+                  const productList = $(".all-product-items .row.gy-4");
+                  productList.empty(); // Clear existing products
+
+                  if (response.medicines.length === 0) {
+                     productList.append("<p>No medicines available for the selected range.</p>");
+                  } else {
+                     response.medicines.forEach((medicine) => {
+                        const productHTML = `
+                                <div class="col-md-4 col-sm-6 col-6">
+                                    <div class="single-shoping-item">
+                                        <div class="shoping-product-img">
+                                            <a href="/store/product/${medicine.id}/${medicine.slug}/">
+                                                <img src="${medicine.thumbnail_url}" alt="${medicine.name}">
+                                            </a>
+                                            <div class="shoping-hover-icon">
+                                                <ul>
+                                                    <li><a class="product-img-popup" href="${medicine.thumbnail_url}"><i class="far fa-eye"></i></a></li>
+                                                    
+                                                    <li><a href="/store/product/${medicine.id}/${medicine.slug}/"><i class="fas fa-cart-plus"></i></a></li>
+                                                    <li><a href="#"><i class="fas fa-search"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="product-details">
+                                            <h4>${medicine.name}</h4>
+                                            <p>${medicine.power} mg</p>
+                                            <p><span>$${medicine.price}</span></p>
+                                            <a href="/store/product/${medicine.id}/${medicine.slug}/" class="add-cart-btn">
+                                                <i class="fas fa-cart-plus"></i> View Product
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        productList.append(productHTML);
+                     });
+                  }
+               },
+               error: function () {
+                  alert("Failed to fetch products. Please try again.");
+               },
+            });
+         },
+      });
+
+      // Display initial range
+      $("#amount").val(
+         "$" + $("#slider-range").slider("values", 0) + " - $" + $("#slider-range").slider("values", 1)
+      );
+   });
+
+</script>
+
+{% endblock %}

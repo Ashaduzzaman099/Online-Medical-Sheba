@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container mt-5">
+  <h2>Payment for Appointment</h2>
+  <p><strong>Doctor:</strong> Dr. {{ appointment_data.doctor_id }}</p>
+  <p><strong>Hospital:</strong> {{ appointment_data.hospital }}</p>
+  <p>
+    <strong>Consultation Type:</strong> {{ appointment_data.consultation_type }}
+  </p>
+  <p><strong>Date:</strong> {{ appointment_data.appointment_date }}</p>
+  <p><strong>Time Slot:</strong> {{ appointment_data.time_slot }}</p>
+  <p><strong>Amount:</strong> $50</p>
+
+  <hr />
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">
+      Pay and Confirm Appointment
+    </button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<!-- Start Doctor Details Section -->
+<section class="list-screen">
+  <div class="containersection">
+    <div class="row">
+      <!-- Left Side: Doctor Profile and Information -->
+      <div class="left-column">
+        <div class="doctor-profile">
+          <div class="doctor-photo">
+            <img
+              src="{% if  doctor.user.profile_pic %}{{  doctor.user.profile_pic.url }}{% else %}{% static 'images/avatar.webp' %}{% endif %}"
+              alt="Doctor Photo"
+            />
+          </div>
+
+          <div class="doctor-info">
+            <h2>{{ doctor.user.full_name }}</h2>
+            <h2>{{ doctor.name }}</h2>
+            <p>Specialty: {{ doctor.specialties }}</p>
+            <p>{{ doctor.experience }} Years of Experience</p>
+            <p class="availability">
+              Availability: <strong>{{ doctor.hospital }}</strong>
+            </p>
+            <br />
+            <div class="doctor_about">
+              <h4>About</h4>
+              <p>{{ doctor.about }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side: Appointment Schedule Card -->
+      <div class="right-column">
+        <div class="appointment-card">
+          <h4>Available Slots</h4>
+    <ul>
+        {% for slot in availability_details %}
+            <li>{{ slot.day }}: {{ slot.start_time }} - {{ slot.end_time }} {{ slot.am_pm }}</li>
+        {% empty %}
+            <li>No availability details found for this doctor.</li>
+        {% endfor %}
+    </ul>
+    <hr>
+
+    <div class="text-center mt-4">
+        <!-- Book Appointment Button -->
+        <a href="{% url 'Doctors:book_appointment' doctor.id %}" class="btn btn-primary">
+            Book Appointment
+        </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Open Appointment Modal
+  function openAppointmentModal() {
+    document.getElementById("appointment-modal").style.display = "flex";
+  }
+
+  // Close Appointment Modal
+  function closeAppointmentModal() {
+    document.getElementById("appointment-modal").style.display = "none";
+  }
+</script>
+{% endblock %}

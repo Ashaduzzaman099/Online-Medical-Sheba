@@ -1,0 +1,326 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="ambulance-page">
+    <!-- Header/Banner Section -->
+    <div class="banner">
+        <!-- Title Section -->
+        <div class="title-hospital">
+            <h2>Find Ambulance</h2>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search">
+            <select id="ambulanceFilter" onchange="applyFilters()">
+                <option value>Select Ambulance Type</option>
+                <option value="AC">AC</option>
+                <option value="Non-AC">Non-AC</option>
+                <option value="ALS">ALS</option>
+                <option value="ACLS">ACLS</option>
+                <option value="AIR">AIR</option>
+                <option value="ICU">ICU</option>
+                <option value="NICU">NICU</option>
+                <option value="Freezing">Freezing</option>
+            </select>
+            <input
+                type="search"
+                id="search"
+                placeholder="Search Ambulance name, location..."
+                class="search-box"
+                onkeyup="applyFilters()" />
+        </div>
+
+        <!-- Location Buttons -->
+        <div class="location-container">
+            <h3 class="select_location">Select Location</h3>
+            <div class="location-buttons">
+                <button onclick="filterByDivision('Dhaka')">Dhaka</button>
+                <button
+                    onclick="filterByDivision('Chittagong')">Chittagong</button>
+                <button onclick="filterByDivision('Rajshahi')">Rajshahi</button>
+                <button onclick="filterByDivision('Khulna')">Khulna</button>
+                <button onclick="filterByDivision('Sylhet')">Sylhet</button>
+                <button onclick="filterByDivision('Barishal')">Barishal</button>
+                <button onclick="filterByDivision('Rangpur')">Rangpur</button>
+                <button
+                    onclick="filterByDivision('Mymensingh')">Mymensingh</button>
+            </div>
+        </div>
+
+        <!-- Google Map -->
+        <div id="map" style="height: 400px; width: 100%; margin: 20px 0"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h3>Available Ambulance Services</h3>
+        <div class="ambulance-grid" id="ambulance-list"></div>
+        <button
+            id="showMoreBtn"
+            class="show-more-btn"
+            onclick="showMoreAmbulances()"
+            style="display: none">
+            Show More
+        </button>
+    </div>
+</div>
+
+<script>
+  let map;
+  let markers = [];
+  let currentIndex = 0;
+  const ambulances = [
+    {% for ambulance in ambulances %}
+    {
+      name: "{{ ambulance.name }}",
+      type: "{{ ambulance.get_type_display }}",
+      location: "{{ ambulance.location }}",
+      division: "{{ ambulance.division }}",
+      lat: {{ ambulance.latitude }},
+      lng: {{ ambulance.longitude }},
+      imageUrl: "{{ ambulance.image_url }}",
+      status: "{{ ambulance.status }}",
+      contact: "{{ ambulance.contact_number }}",
+      facilities: "{{ ambulance.facilities }}",
+      userRating: "{{ ambulance.user_rating }}",
+    },
+    {% endfor %}
+  ];
+
+  let Ambulances = [
+    {
+      name: "Ambulances in Dhaka",
+      address: "Dhaka",
+      lat: 23.82521824911248,
+      lng: 90.58511557829199,
+      location: "Dhaka",
+    },
+    {
+      name: "Ambulances in Chittagong",
+      address: "Chittagong",
+      lat: 22.36994089008697,
+      lng: 92.19991883864228,
+      location: "Chittagong",
+    },
+    {
+      name: "Ambulances in Rajshahi",
+      address: "Rajshahi",
+      lat: 24.387962400406753,
+      lng: 88.57604247234389,
+      location: "Rajshahi",
+    },
+    {
+      name: "Ambulances in Khulna",
+      address: "Khulna",
+      lat: 22.814473777953722,
+      lng: 89.65646865983172,
+      location: "Khulna",
+    },
+    {
+      name: "Ambulances in Sylhet",
+      address: "Sylhet",
+      lat: 24.911626623369195,
+      lng: 91.88382829081084,
+      location: "Sylhet",
+    },
+    {
+      name: "Ambulances in Barishal",
+      address: "Barishal",
+      lat: 22.7234322346695,
+      lng: 90.3758196538034,
+      location: "Barishal",
+    },
+    {
+      name: "Ambulances in Rangpur",
+      address: "Rangpur",
+      lat: 25.74549019698313,
+      lng: 89.27980286757266,
+      location: "Rangpur",
+    },
+    {
+      name: "Ambulances in Mymensingh",
+      address: "Mymensingh",
+      lat: 24.753373908561187,
+      lng: 90.40731679589156,
+      location: "Mymensingh",
+    },
+
+  ];
+
+  function initMap() {
+    const defaultLocation = { lat: 23.8103, lng: 90.4125 }; // Dhaka as default
+    map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 10,
+      center: defaultLocation,
+    });
+    applyFilters(); // Apply the initial filters
+  }
+
+  function clearMarkers() {
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+  }
+
+  function createMarker(ambulance) {
+    const marker = new google.maps.Marker({
+      position: { lat: ambulance.lat, lng: ambulance.lng },
+      map: map,
+      title: ambulance.name,
+      icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+    });
+
+    const infoWindow = new google.maps.InfoWindow({
+      content: `<h3>${ambulance.name}</h3><p>${ambulance.location}</p><p>Contact: ${ambulance.contact}</p>`,
+    });
+    marker.addListener('click', () => {
+      infoWindow.open(map, marker);
+    });
+
+    markers.push(marker);
+  }
+
+  function updateMarkers(filteredAmbulances) {
+    clearMarkers();
+    filteredAmbulances.forEach(createMarker);
+  }
+
+  function updateAmbulanceGrid(filteredAmbulances) {
+    const listElement = document.getElementById("ambulance-list");
+    listElement.innerHTML = filteredAmbulances
+      .slice(0, currentIndex + 6) // Show up to the first 6 ambulances
+      .map(ambulance => `
+        <div class="ambulance-card">
+          <img src="${ambulance.imageUrl}" alt="Ambulance" class="ambulance-image" />
+          <div class="ambulance-details">
+            <h1 class="service-name" style="font-size:18px">${ambulance.name}</h1>
+            <p><strong>Type:</strong> ${ambulance.type}</p>
+            <p><strong>Status:</strong> ${ambulance.status}</p>
+            <p><strong>Location:</strong> ${ambulance.location}</p>
+            <p><strong>Contact:</strong> ${ambulance.contact}</p>
+            <p><strong>Facilities:</strong> ${ambulance.facilities}</p>
+            <p><strong>Rating:</strong> ⭐ ${ambulance.userRating}</p>
+            <div>
+              <button
+                class="view-more-btn"
+                onclick="showOnMap(${ambulance.lat}, ${ambulance.lng}, '${ambulance.name}')"
+              >
+                View on Map
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+
+    // Show the "Show More" button if there are more ambulances to display
+    const showMoreBtn = document.getElementById("showMoreBtn");
+    showMoreBtn.style.display = filteredAmbulances.length > currentIndex + 6 ? 'block' : 'none';
+  }
+
+  function applyFilters() {
+    const typeFilter = document.getElementById("ambulanceFilter").value.toLowerCase();
+    const searchValue = document.getElementById("search").value.toLowerCase();
+    const filteredAmbulances = ambulances.filter(ambulance => {
+      const matchesType = typeFilter ? ambulance.type.toLowerCase().includes(typeFilter) : true;
+      const matchesSearch = searchValue
+        ? ambulance.name.toLowerCase().includes(searchValue) ||
+          ambulance.location.toLowerCase().includes(searchValue)
+        : true;
+      return matchesType && matchesSearch;
+    });
+
+    if (filteredAmbulances.length === 0) {
+      showPopup("No ambulances found for the entered search criteria!");
+    }
+
+    updateAmbulanceGrid(filteredAmbulances);
+    updateMarkers(filteredAmbulances);
+  }
+
+  // Function to show the popup message
+  function showPopup(message) {
+    // Create popup div
+    const popup = document.createElement("div");
+    popup.classList.add("popup-message");
+    popup.textContent = message;
+
+    // Append to the body
+    document.body.appendChild(popup);
+
+    // Automatically remove the popup after 3 seconds
+    setTimeout(() => {
+      popup.remove();
+    }, 3000);
+  }
+
+  function filterByLocation(location) {
+    const filteredAmbulances = ambulances.filter(ambulance => ambulance.division === location);
+    if (filteredAmbulances.length === 0) {
+      showPopup("No ambulances found in the selected location!");
+    }
+    updateAmbulanceGrid(filteredAmbulances);
+    updateMarkers(filteredAmbulances);
+
+    if (filteredAmbulances.length > 0) {
+      map.setCenter({ lat: filteredAmbulances[0].lat, lng: filteredAmbulances[0].lng });
+      map.setZoom(10);
+    }
+  }
+
+  function filterByDivision(location) {
+    // Find the Ambulance corresponding to the division
+    const selectedAmbulance = Ambulances.find(
+      (ambulance) => ambulance.location === location
+    );
+
+    if (selectedAmbulance) {
+      // Center the map on the selected division
+      map.setCenter({
+        lat: selectedAmbulance.lat,
+        lng: selectedAmbulance.lng,
+      });
+      updateAmbulanceGrid(filteredAmbulances);
+      updateMarkers(filteredAmbulances);
+    }
+  }
+
+  function showOnMap(lat, lng, name) {
+    map.setCenter({ lat: lat, lng: lng });
+    map.setZoom(14);
+
+    const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+
+    const infoWindow = new google.maps.InfoWindow({
+      content: `
+        <h3 style='color:black'>${name}</h3>
+        <p>Selected ambulance location</p>
+        <a href="${googleMapsUrl}" target="_blank" style="color:blue; text-decoration:underline;">
+          Show on Google Maps
+        </a>
+      `,
+    });
+
+    const marker = new google.maps.Marker({
+      position: { lat: lat, lng: lng },
+      map: map,
+      title: name,
+      icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+    });
+
+    clearMarkers();
+    markers.push(marker);
+    infoWindow.open(map, marker);
+
+    setTimeout(() => infoWindow.close(), 5000);
+  }
+
+  function showMoreAmbulances() {
+    currentIndex += 6; // Load 6 more ambulances
+    applyFilters(); // Reapply filters to update the grid
+  }
+</script>
+
+<script
+    async
+    defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjQb3jcfz9CSN2AlnkrxOB3OEptT5xXSY&callback=initMap"></script>
+
+{% endblock %}

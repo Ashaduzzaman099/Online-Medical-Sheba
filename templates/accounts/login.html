@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="login-area">
+   <div class="container" id="container">
+      <div class="row">
+         <div class="col-md-6">
+            <div class="login-left form-container sign-in">
+
+               <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <h2 class="mb-4 text-center">Sign In</h2>
+
+                  <div class="social-icons">
+                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                     <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                     <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                  </div>
+
+                  <span>or use your email and password</span>
+
+                  <!-- Email Field -->
+                  <div class="form-group single-box">
+                     {{ form.as_p }}
+                  </div>
+
+
+
+
+                  <a href="{% url 'password_reset' %}" class="forgot-password">Forget Your Password?</a>
+
+                  <input type="submit" value="Sign In" class="btn-style-1">
+               </form>
+
+
+
+            </div>
+         </div>
+
+         <div class="col-md-6">
+            <div class="login-right toggle-container">
+               <div class="toggle">
+                  <div class="toggle-panel toggle-right">
+                     <h1 class="text-white">Hello, Friend!</h1>
+                     <p class="text-white">Register with your
+                        personal details to use all of site
+                        features</p>
+                     <a class="btn-style-2" href="{% url 'accounts:register_view' %}" id="register">Sign Up</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </div>
+</section>
+
+
+{% endblock %}

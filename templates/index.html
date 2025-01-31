@@ -1,0 +1,401 @@
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% load static %}
+{% block content %}
+<!--- START Hero Area -->
+<section class="slider-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="owl-carousel owl-theme carouser-slider">
+          <!-- Carosel Single Item -->
+          <div class="single-carosel-item">
+            <div class="slider-content">
+              <h1><span>Early protection</span> for your family health</h1>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
+                facere quia quasi itaque nobis consequatur dolorum totam cumque
+                quod nemo!
+              </p>
+              <a href class="btn-style-1">Learn More</a>
+            </div>
+            <div class="slider-image">
+              <img src="{% static 'images/slider_img/1.png' %}" alt="slider1" />
+            </div>
+          </div>
+          <!-- Carosel Single Item -->
+          <div class="single-carosel-item">
+            <div class="slider-content">
+              <h1><span>Early protection</span> for your family health</h1>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
+                facere quia quasi itaque nobis consequatur dolorum totam cumque
+                quod nemo!
+              </p>
+              <a href class="btn-style-1">Learn More</a>
+            </div>
+            <div class="slider-image">
+              <img src="{% static 'images/slider_img/2.png' %}" alt />
+            </div>
+          </div>
+          <!-- Carosel Single Item -->
+          <div class="single-carosel-item">
+            <div class="slider-content">
+              <h1><span>Early protection</span> for your family health</h1>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
+                facere quia quasi itaque nobis consequatur dolorum totam cumque
+                quod nemo!
+              </p>
+              <a href class="btn-style-1">Learn More</a>
+            </div>
+            <div class="slider-image">
+              <img src="{% static 'images/slider_img/3.png' %}" alt />
+            </div>
+          </div>
+          <!-- Carosel Single Item -->
+          <div class="single-carosel-item">
+            <div class="slider-content">
+              <h1><span>Early protection</span> for your family health</h1>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima
+                facere quia quasi itaque nobis consequatur dolorum totam cumque
+                quod nemo!
+              </p>
+              <a href class="btn-style-1">Learn More</a>
+            </div>
+            <div class="slider-image">
+              <img src="{% static 'images/slider_img/4.png' %}" alt />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--- END Hero Area ->
+
+<!- START Our Services Area -->
+<section class="services-area">
+  <div class="container">
+    <div class="row g-5 custom-width">
+      <div class="col-md-12">
+        <div class="service-title">
+          <h2>Our All Services</h2>
+          <p>
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore fugiat sunt culpa officia deserunt mollit anim est
+            laborum.
+          </p>
+        </div>
+      </div>
+      <!-- Single service Item -->
+      <div class="col-md-3">
+        <div class="single-service-item">
+          <div class="service-icon">
+            <a href="#"
+              ><img src="{% static 'images/service-icons/1.png' %}" alt
+            /></a>
+          </div>
+          <div class="service-name">
+            <h6><a href="{% url 'Ambulance:findAmbulance' %}">Ambulance</a></h6>
+          </div>
+        </div>
+      </div>
+      <!-- Single service Item -->
+      <div class="col-md-3">
+        <div class="single-service-item">
+          <div class="service-icon">
+            <a href
+              ><img src="{% static 'images/service-icons/2.png' %}" alt
+            /></a>
+          </div>
+          <div class="service-name">
+            <a href="{% url 'medicine_store:store_view' %}">Medicine</a>
+          </div>
+        </div>
+      </div>
+      <!-- Single service Item -->
+      <div class="col-md-3">
+        <div class="single-service-item">
+          <div class="service-icon">
+            <a href="#"
+              ><img src="{% static 'images/service-icons/3.png' %}" alt
+            /></a>
+          </div>
+          <div class="service-name">
+            <h6><a href="#">Appointment</a></h6>
+          </div>
+        </div>
+      </div>
+      <!-- Single service Item -->
+      <div class="col-md-3">
+        <div class="single-service-item">
+          <div class="service-icon">
+            <a href="#"
+              ><img src="{% static 'images/service-icons/4.png' %}" alt
+            /></a>
+          </div>
+          <div class="service-name">
+            <h6><a href="{% url 'Hospital:findHospital' %}">Hospital</a></h6>
+          </div>
+        </div>
+      </div>
+
+      <!-- Single service Item -->
+      <div class="col-md-3">
+        <div class="single-service-item">
+          <div class="service-icon">
+            <a href="#"
+              ><img src="{% static 'images/service-icons/5.png' %}" alt
+            /></a>
+          </div>
+          <div class="service-name">
+            <h6><a href>Ambulance</a></h6>
+          </div>
+        </div>
+      </div>
+      <!-- Single service Item -->
+      <div class="col-md-3">
+        <div class="single-service-item">
+          <div class="service-icon">
+            <a href
+              ><img src="{% static 'images/service-icons/6.png' %}" alt
+            /></a>
+          </div>
+          <div class="service-name">
+            <h6><a href="#">Doctor</a></h6>
+          </div>
+        </div>
+      </div>
+      <!-- Single service Item -->
+      <div class="col-md-3">
+        <div class="single-service-item">
+          <div class="service-icon">
+            <a href="#"
+              ><img src="{% static 'images/service-icons/1.png' %}" alt
+            /></a>
+          </div>
+          <div class="service-name">
+            <h6><a href="#">Appointment</a></h6>
+          </div>
+        </div>
+      </div>
+      <!-- Single service Item -->
+      <div class="col-md-3">
+        <div class="single-service-item">
+          <div class="service-icon">
+            <a href="#"
+              ><img src="{%  static 'images/service-icons/3.png' %}" alt
+            /></a>
+          </div>
+          <div class="service-name">
+            <h6><a href="#">Blood</a></h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--- END Services Area ->
+
+
+<!- Top Selling Medicines Section -->
+<section class="main-shoping-area top-selling-medicines">
+  <div class="container">
+    <!-- Section Title -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-title text-center">
+          <h2>Top Selling Medicines</h2>
+          <p>Discover the most popular medicines trusted by our customers.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row gy-4 m-3">
+      {% for medicine in top_selling_medicines %}
+      <!-- Single Product Item -->
+      <div class="col-md-3 col-sm-6 col-6">
+        <div class="single-shoping-item">
+          <div class="shoping-product-img">
+            <a
+              href="{% url 'medicine_store:product_detail' medicine.id medicine.slug %}"
+            >
+              <img
+                src="{{ medicine.thumbnail.url }}"
+                alt="{{ medicine.name }}"
+              />
+            </a>
+            <!-- Hover Icons -->
+            <div class="shoping-hover-icon">
+              <ul>
+                <li>
+                  <a
+                    class="product-img-popup"
+                    href="{{ medicine.thumbnail.url }}"
+                  >
+                    <i class="far fa-eye"></i>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="{% url 'medicine_store:product_detail' medicine.id medicine.slug %}"
+                  >
+                    <i class="fas fa-cart-plus"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#"><i class="fas fa-search"></i></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="product-details text-center">
+            <h4>{{ medicine.name }}</h4>
+            <p>{{ medicine.power }} mg</p>
+            <p><span>{{ medicine.price }} BDT</span></p>
+            <a
+              href="{% url 'medicine_store:product_detail' medicine.id medicine.slug %}"
+              class="add-cart-btn"
+            >
+              <i class="fas fa-cart-plus"></i> View Product
+            </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <!-- If no top-selling medicines are available -->
+      <div class="col-md-12 text-center">
+        <p>No top-selling medicines available at the moment.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Top Hospitals Section -->
+<section class="main-shoping-area top-hospitals section-padding">
+  <div class="container">
+    <!-- Section Title -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-title text-center">
+          <h2>Top Hospitals</h2>
+          <p>Explore the top-rated hospitals trusted by patients.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row gy-4 m-3">
+      {% for hospital in top_hospitals %}
+      <!-- Single Hospital Card -->
+      <div class="col-md-3 col-sm-6 col-6">
+        <div class="single-shoping-item">
+          <div class="shoping-product-img text-center">
+            <a href="{{ hospital.get_google_maps_url }}" target="_blank">
+              <img
+                src="{{ hospital.logo_url }}"
+                alt="{{ hospital.name }}"
+                style="
+                  width: 150px;
+                  height: 150px;
+                  object-fit: cover;
+                  border-radius: 50%;
+                "
+              />
+            </a>
+          </div>
+          <!-- Hospital Details -->
+          <div class="product-details text-center">
+            <h4>{{ hospital.name }}</h4>
+            <p>{{ hospital.doctor_count }} Doctor(s)</p>
+            <p>{{ hospital.specialty_count }} Specialty(s)</p>
+            <p>Fee Range: <span>{{ hospital.fee_range }}</span></p>
+            <a
+              href="{{ hospital.get_google_maps_url }}"
+              target="_blank"
+              class="add-cart-btn"
+            >
+              <i class="fas fa-map-marker-alt"></i> View on Map
+            </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <!-- If no hospitals are available -->
+      <div class="col-md-12 text-center">
+        <p>No top hospitals available at the moment.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Top Ambulances Section -->
+<section class="main-shoping-area top-ambulances section-padding">
+  <div class="container">
+    <!-- Section Title -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-title text-center">
+          <h2>Top Ambulance Services</h2>
+          <p>
+            Explore the best ambulance services available for emergency care.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ambulance Cards -->
+    <div class="row gy-4 m-3">
+      {% for ambulance in top_ambulances %}
+      <!-- Ambulance Card -->
+      <div class="col-md-3 col-sm-6 col-12">
+        <div class="single-shoping-item">
+          <div class="shoping-product-img">
+            <a href="{{ ambulance.get_google_maps_url }}" target="_blank">
+              <img
+                src="{{ ambulance.image_url }}"
+                alt="{{ ambulance.name }}"
+                class="ambulance-image"
+              />
+            </a>
+            <!-- Hover Icons -->
+            <div class="shoping-hover-icon">
+              <ul>
+                <li>
+                  <a href="{{ ambulance.get_google_maps_url }}" target="_blank">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="product-details text-center">
+            <h4>{{ ambulance.name }}</h4>
+            <p><strong>Type:</strong> {{ ambulance.type }}</p>
+            <p>
+              <strong>Status:</strong>
+              {% if ambulance.status %} Available {% else %} Not Available
+              {%endif %}
+            </p>
+            <p><strong>Location:</strong> {{ ambulance.location }}</p>
+            <p><strong>Contact:</strong> {{ ambulance.contact_number }}</p>
+            <p><strong>Rating:</strong> ⭐ {{ ambulance.user_rating }}</p>
+            <a
+              href="{{ ambulance.get_google_maps_url }}"
+              target="_blank"
+              class="add-cart-btn"
+            >
+              <i class="fas fa-map-marker-alt"></i> View on Map
+            </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center">
+        <p>No top ambulance services available at the moment.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

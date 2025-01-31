@@ -1,0 +1,292 @@
+{% extends 'base.html' %} {% block title %} {{ user.username }} Medicine
+{%endblock %} {% block content %} {% load static %}
+
+
+<!-- Start Checkout Area -->
+<section class="checkout-area">
+   <div class="banner-area">
+      <div class="container">
+         <div class="row align-items-center ">
+            <div class="col-md-3">
+               <div class="banner-left-img">
+                  <img src="{% static 'images/slider_img/3.png' %}" alt="">
+               </div>
+            </div>
+            <div class="col-md-6">
+               <div class="title">
+                  <h2>Checkout</h2>
+                  <p>Continue Your Order Process</p>
+               </div>
+            </div>
+            <div class="col-md-3">
+               <div class="banner-left-img">
+                  <img src="{% static 'images/slider_img/4.png' %}" alt="">
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="selected-product-details">
+      <div class="container">
+         <div class="row">
+
+            <div class="col-lg-12">
+               <div class="order-step">
+                  <ul>
+                     <li class="active">
+                        <h5>Order Items</h5>
+                        <div class="arrow-right">
+                           <i class="far fa-credit-card"></i>
+                           <i class="bi bi-arrow-right"></i>
+                        </div>
+                     </li>
+                     <li>
+                        <a href="{% url 'payments:checkout' %}">
+                           <h5>Checkout/Shipping</h5>
+                           <div class="arrow-right">
+                              <i class="fas fa-shipping-fast"></i>
+                              <i class="bi bi-arrow-right"></i>
+                           </div>
+                        </a>
+
+                     </li>
+
+                     <li class="active">
+                        <h5>Shipping && Order <br>Review</h5>
+                        <div class="arrow-right">
+                           <i class="fas fa-hand-holding-usd"></i>
+                           <i class="bi bi-arrow-right"></i>
+                        </div>
+                     </li>
+
+                     <li>
+                        <h5>Payment</h5>
+                        <div class="arrow-right">
+                           <i class="fas fa-hand-holding-usd"></i>
+                           <i class="bi bi-arrow-right"></i>
+                        </div>
+                     </li>
+
+
+                  </ul>
+               </div>
+            </div>
+            <div class="col-lg-8">
+               <div class="selected-product-details">
+                  <div class="table table-responsive">
+                     <table>
+                        <tbody>
+                           <tr>
+                              <th></th>
+                              <th>PRODUCT</th>
+                              <th>PRICE</th>
+                              <th>QUANTITY</th>
+                              <th>SUBTOTAL</th>
+                              <th>ACTION</th>
+                           </tr>
+
+
+                           {% for product in cart_products %}
+                           <tr>
+                              <td>
+                                 <button class="btn-style-1 delete-product" style="
+                                    border-radius: 50%;
+                                    padding: 0;
+                                    width: 30px;
+                                    height: 30px;
+                                    line-height: 11px;
+                                 " type="button" data-index="{{product.id}}"><i
+                                       class="far fa-times-circle"></i></button>
+
+                              </td>
+                              <td>
+                                 <div class="table-data-img">
+
+                                    <img src="{{ product.thumbnail.url }}" alt="{{product.name}}">
+
+                                    <p>{{product.name}}</p>
+                                 </div>
+                              </td>
+                              <td><span>{{product.price}} TK</span></td>
+                              <td>
+                                 <label for="qty-select"></label>
+                                 <select class="form-group" id="select{{product.id}}" name="qtyBox">
+
+                                    {% for key, value in quantities.items %}
+                                    {% if key == product.id|slugify %}
+                                    <option selected value="{{ value }}">{{ value }}</option>
+                                    {% endif %}
+
+
+                                    {% endfor %}
+
+                                    <option value="1">1</option>
+                                    <option value="3">3</option>
+                                    <option value="5">5</option>
+                                    <option value="7">7</option>
+                                    <option value="12">12</option>
+                                    <option value="box">1 Box</option>
+                                 </select>
+                              </td>
+                              <td>
+                                 <p id="sub-total">{{ product.sub_total }} TK</p>
+                              </td>
+                              <td style="padding-right: 20px;">
+                                 <button class="btn-style-1 update-cart" style="padding: 6px 18px;font-size: 12px;"
+                                    type="button" data-index="{{product.id}}">Update</button>
+                              </td>
+                           </tr>
+                           {% endfor %}
+
+
+
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="table-bottom-buttons">
+                     <!-- <a href="#" class="btn-style-1 new">Coupon Code</a>
+                     <a href="#" class="btn-style-1">Apply Coupon</a> -->
+                     <a href="#" class="btn-style-1 new">Clear All</a>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4">
+               <!-- CART TOTALS -->
+               <div class="cart-total-wrapper">
+                  <div class="cart-totals">
+                     <h5>CART TOTALS</h5>
+                     <ul>
+                        <li><b>Subtotal</b><span>{{ totals }} TK</span></li>
+                        <li><b>Shipping</b>
+                           <div class="shipping-option">
+                              <p>
+                                 <input type="radio" checked name="radio-1" id="free-shiping">
+                                 <label for="free-shiping">Free shipping</label>
+                              </p>
+                              <!-- <p>
+                                 <input type="radio" name="radio-2" id="local-picup">
+                                 <label for="local-picup">Local Pickup: $10.00</label>
+                              </p> -->
+
+                              <p>Shipping options will be updated during checkout.</p>
+
+                              <!-- <a href="#" class="calc-btn">Calculate shipping</a>
+                              <div class="calculate-options">
+                                 <form action="#">
+                                    <div class="single-field">
+                                       <select name="select-option1" id="select-option1">
+                                          <option selected value="United States (us)">United States (us)</option>
+                                          <option value="">United Kingdom(uk)</option>
+                                          <option value="">Bangladesh</option>
+                                          <option value="">India</option>
+                                       </select>
+                                    </div>
+
+                                    <div class="single-field">
+                                       <select name="select-option2" id="select-option2">
+                                          <option value="#">State</option>
+                                          <option value="#">State 2</option>
+                                          <option value="#">State 3</option>
+                                       </select>
+                                    </div>
+                                    <div class="single-field">
+                                       <select name="select-option3" id="select-option3">
+                                          <option value="#" selected>Town / City</option>
+                                          <option value="#">Dinajput</option>
+                                       </select>
+                                    </div>
+                                    <div class="single-field">
+                                       <input type="text" name="zip" id="zip" placeholder="Zip">
+                                    </div>
+                                    <div class="single-field">
+                                       <input type="submit" class="btn-style-1" value="Update">
+                                    </div>
+
+                                 </form>
+                              </div> -->
+
+
+
+                           </div>
+                        </li>
+                        <li class="total"><b>Total</b><span>{{totals}}</span></li>
+                     </ul>
+                  </div>
+                  <div class="proceed-btn">
+                     <a href="{% url 'payments:checkout' %}" class="btn-style-1">PROCEED TO CHECKOUT</a>
+                  </div>
+               </div>
+
+
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+<!-- End Checkout Area -->
+
+<script>
+   $(document).on('click', '.update-cart', function (e) {
+      e.preventDefault();
+
+      // grab the product id
+      var productid = $(this).data('index');
+      console.log(productid)
+
+      // Get selected quantity
+      var selectedQuantity = $('#select' + productid + ' option:selected').val();
+      console.log(selectedQuantity)
+
+      $.ajax({
+         type: 'POST',
+         url: "{% url 'cart:cart_update' %}",
+         data: {
+            product_id: productid,
+            quantity: selectedQuantity,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+         },
+         success: function (json) {
+            // Reload the page or update the cart dynamically
+            location.reload();
+         },
+         error: function (xhr, errmsg, err) {
+            console.error("Error: ", errmsg);
+         }
+      });
+   });
+
+
+   // Delete Item From Cart
+   $(document).on('click', '.delete-product', function (e) {
+      e.preventDefault();
+      // grab the product id
+      //var productid = $(this).data('index');
+
+      $.ajax({
+         type: 'POST',
+         url: "{% url 'cart:cart_remove' %}",
+         data: {
+            product_id: $(this).data('index'),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+         },
+         success: function (json) {
+            //console.log(json)
+            //document.getElementById("cart_quantity").textContent = json.qty
+            location.reload();
+         },
+
+         error: function (xhr, errmsg, err) {
+
+         }
+
+
+      });
+
+   })
+</script>
+
+
+
+{% endblock %}

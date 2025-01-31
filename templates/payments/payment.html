@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %} {{ user.username }} Medicine {% endblock %}
+{% block content %} {% load static %}
+
+<section>
+   <div class="container">
+      <div class="row">
+         <div class="col-md-12">
+            <form action="">
+               {% csrf_token %}
+               <input type="text" hidden name="csrfmiddlewaretoken" id="">
+            </form>
+            <div class="paypal-payment" style="width: 500px; margin: auto; padding: 100px 0;">
+               <div id="paypal-button-container"></div>
+               <p id="result-message"></p>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script
+   src="https://www.paypal.com/sdk/js?client-id=Ac0Q-lwRvK3FoMrUhcSwoFeOQC01EkVUytq7A6MSMhHtlFqZJb7vYw_I33L5LSSkZoq7Q-hJKRXce1Cl"
+   data-sdk-integration-source="developer-studio"></script>
+<script>
+   paypal.Buttons({
+      // Set up the transaction
+      createOrder: function (data, actions) {
+         const totalAmount = '{{ totals }}'; // Dynamically fetch the total amount from the context
+         return actions.order.create({
+            purchase_units: [{
+               amount: {
+                  value: totalAmount // Use the dynamic total amount
+               }
+            }]
+         });
+      },
+      // Handle successful payment
+      onApprove: function (data, actions) {
+         return actions.order.capture().then(function (details) {
+            // Call backend to save order and order items
+            fetch("{% url 'payments:handle_payment_success' %}", {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+               },
+
+            })
+               .then(response => response.json())
+               .then(data => {
+                  if (data.success) {
+                     // Redirect to a success page or show success message
+                     Swal.fire({
+                        title: 'Thank you for your payment!',
+                        text: 'Your Order has been recieved!',
+                        icon: 'success',
+                        confirmButtonText: 'Done'
+                     })
+                  } else {
+                     Swal.fire({
+                        title: 'Order Failed!',
+                        text: 'Failed to process the order.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                     })
+
+                  }
+               })
+               .catch(error => console.error('Error processing order:', error));
+         });
+      },
+      // Handle cancellations
+      onCancel: function (data) {
+         Swal.fire({
+            title: 'Payment was cancelled.',
+            text: 'Thank you for your interest in our products!',
+            icon: 'error',
+            confirmButtonText: 'Back to Shopping',
+            preConfirm: () => {
+               window.location.href = "{% url 'medicine_store:store_view' %}";
+            }
+         })
+
+      },
+      // Handle errors
+      onError: function (err) {
+         console.error('PayPal error:', err);
+         Swal.fire({
+            title: 'An error occurred during the payment process.',
+            text: 'Would you like to retry?',
+            icon: 'error',
+            confirmButtonText: 'Retry',
+            preConfirm: () => {
+
+               window.location.href = "{% url 'payments:billing_info' %}";
+            }
+         });
+
+      }
+   }).render('#paypal-button-container'); // Display PayPal button
+</script>
+
+
+{% endblock %}

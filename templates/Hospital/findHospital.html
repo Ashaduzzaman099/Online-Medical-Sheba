@@ -1,0 +1,405 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="hospital-page">
+  <div class="banner">
+    <!-- Title Section -->
+    <div class="title-hospital">
+      <h2>Find Hospital</h2>
+    </div>
+
+    <!-- Search Box -->
+    <div class="searching">
+      <input type="search" name="search" id="search" placeholder="Search hospital name, location..." class="search-box"
+        onkeyup="searchHospitals()" />
+    </div>
+
+    <!-- Location Buttons -->
+    <div class="location-container">
+      <h3 style="color: black">Select Location</h3>
+      <div class="location-buttons" id="location-list">
+        <button onclick="filterByLocation('Dhaka')">Dhaka</button>
+        <button onclick="filterByLocation('Chittagong')">Chittagong</button>
+        <button onclick="filterByLocation('Rajshahi')">Rajshahi</button>
+        <button onclick="filterByLocation('Khulna')">Khulna</button>
+        <button onclick="filterByLocation('Sylhet')">Sylhet</button>
+        <button onclick="filterByLocation('Barishal')">Barishal</button>
+        <button onclick="filterByLocation('Rangpur')">Rangpur</button>
+        <button onclick="filterByLocation('Mymensingh')">Mymensingh</button>
+      </div>
+    </div>
+
+    <!-- Google Map -->
+    <div id="map" style="height: 400px; width: 100%; margin: 20px 0"></div>
+  </div>
+  <div class="main-content">
+      <h3>Recommended Hospitals</h3>
+      <div class="wrapping" id="card_conatiner">
+        {% for hospital in hospital_list %}
+        <div class="hospital-card">
+          <div class="hospital-icon">
+            <img src="{{ hospital.logo_url }}" alt="{{ hospital.name }}" />
+          </div>
+          <div class="hospital-info">
+            <h3>{{ hospital.name }}</h3>
+            <p>{{ hospital.doctor_count }} Doctor(s)</p>
+            <p>{{ hospital.specialty_count }} Specialty(s)</p>
+            <p>{{ hospital.address }}</p>
+            <div>
+              <span>Fee: {{ hospital.fee_range }} Taka</span>
+              <a href="https://maps.google.com/?q={{ hospital.latitude }},{{ hospital.longitude }}" target="_blank"
+                class="view-more-btn">View on Map</a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p>No hospitals found.</p>
+        {% endfor %}
+      </div>
+      <!-- Show More Button -->
+      <div class="show-more-container" style="text-align: center; margin-top: 20px;">
+        <button id="showMoreBtn" class="show-more-btn">Show More</button>
+      </div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log("cards,initialVisibleCount")
+    // Select the hospital grid container and cards
+    const grid = document.getElementById("card_conatiner");
+    const cards = Array.from(grid.getElementsByClassName("hospital-card"));
+    const showMoreBtn = document.getElementById("showMoreBtn");
+
+    // Number of cards to show initially
+    const initialVisibleCount = 6;
+
+    // Function to update card visibility
+    function updateCardVisibility() {
+      cards.forEach((card, index) => {
+        card.style.display = index < initialVisibleCount ? "block" : "none";
+      });
+    }
+
+    // Initially update the visibility of the cards
+    updateCardVisibility();
+
+
+    // Add event listener for "Show More" button
+    showMoreBtn.addEventListener("click", function () {
+      cards.forEach(card => (card.style.display = "block")); // Show all cards
+      showMoreBtn.style.display = "none"; // Hide the button
+    });
+
+    // Hide the button if there are 6 or fewer cards
+    if (cards.length <= initialVisibleCount) {
+      showMoreBtn.style.display = "none";
+    }
+  });
+
+  // Google Maps Script
+
+  let map;
+  let markers = [];
+  let hospitals = [
+    {
+      name: "Hospital A",
+      address: "Dhaka",
+      lat: 23.82521824911248,
+      lng: 90.58511557829199,
+      location: "Dhaka",
+    },
+    {
+      name: "Hospital B",
+      address: "Chittagong",
+      lat: 22.36994089008697,
+      lng: 92.19991883864228,
+      location: "Chittagong",
+    },
+    {
+      name: "Hospital C",
+      address: "Rajshahi",
+      lat: 24.387962400406753,
+      lng: 88.57604247234389,
+      location: "Rajshahi",
+    },
+    {
+      name: "Hospital D",
+      address: "Khulna",
+      lat: 22.814473777953722,
+      lng: 89.65646865983172,
+      location: "Khulna",
+    },
+    {
+      name: "Hospital E",
+      address: "Sylhet",
+      lat: 24.911626623369195,
+      lng: 91.88382829081084,
+      location: "Sylhet",
+    },
+    {
+      name: "Hospital F",
+      address: "Barishal",
+      lat: 22.7234322346695,
+      lng: 90.3758196538034,
+      location: "Barishal",
+    },
+    {
+      name: "Hospital F",
+      address: "Rangpur",
+      lat: 25.74549019698313,
+      lng: 89.27980286757266,
+      location: "Rangpur",
+    },
+    {
+      name: "Hospital F",
+      address: "Mymensingh",
+      lat: 24.753373908561187,
+      lng: 90.40731679589156,
+      location: "Mymensingh",
+    },
+
+  ];
+
+  function initMap() {
+    const defaultLocation = { lat: 23.8103, lng: 90.4125 }; // Dhaka
+    map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 12,
+      center: defaultLocation,
+    });
+    loadMarkers();
+  }
+
+  function loadMarkers(location = null) {
+    // Clear existing markers
+    markers.forEach((marker) => marker.setMap(null));
+    markers = [];
+
+    // Filter hospitals by location
+    const filteredHospitals = location
+      ? hospitals.filter((hospital) => hospital.location === location)
+      : hospitals;
+
+    // Add markers for the filtered hospitals
+    filteredHospitals.forEach((hospital) => {
+      const marker = new google.maps.Marker({
+        position: { lat: hospital.lat, lng: hospital.lng },
+        map,
+        title: hospital.name,
+        icon: {
+          url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+        },
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<h3>${hospital.name}</h3><p>${hospital.address}</p>`,
+      });
+
+      marker.addListener("click", () => {
+        infoWindow.open(map, marker);
+      });
+
+      markers.push(marker);
+    });
+  }
+
+  function filterByLocation(location) {
+    // Center map on the first hospital in the selected location
+    const selectedHospital = hospitals.find(
+      (hospital) => hospital.location === location
+    );
+
+    if (selectedHospital) {
+      map.setCenter({
+        lat: selectedHospital.lat,
+        lng: selectedHospital.lng,
+      });
+      loadMarkers(location);
+      highlightNearbyHospitals(selectedHospital);
+    }
+  }
+
+  function highlightNearbyHospitals(centerHospital, radius = 5) {
+    // Convert radius to meters for calculations
+    const RADIUS_IN_METERS = radius * 1000;
+
+    markers.forEach((marker) => {
+      const distance = calculateDistance(
+        centerHospital.lat,
+        centerHospital.lng,
+        marker.getPosition().lat(),
+        marker.getPosition().lng()
+      );
+
+      if (distance <= RADIUS_IN_METERS) {
+        marker.setIcon({
+          url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+        });
+      }
+    });
+  }
+
+  function calculateDistance(lat1, lng1, lat2, lng2) {
+    const R = 6371; // Earth's radius in km
+    const dLat = toRadians(lat2 - lat1);
+    const dLng = toRadians(lng2 - lng1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRadians(lat1)) *
+      Math.cos(toRadians(lat2)) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c * 1000; // Distance in meters
+  }
+
+  function toRadians(degrees) {
+    return degrees * (Math.PI / 180);
+  }
+
+  function loadMarkers(location = null) {
+    // Clear existing markers
+    markers.forEach((marker) => marker.setMap(null));
+    markers = [];
+
+    // Filter hospitals by location
+    const filteredHospitals = location
+      ? hospitals.filter((hospital) => hospital.location === location)
+      : hospitals;
+
+    filteredHospitals.forEach((hospital) => {
+      const marker = new google.maps.Marker({
+        position: { lat: hospital.lat, lng: hospital.lng },
+        map,
+        title: hospital.name,
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<h3>${hospital.name}</h3><p>${hospital.address}</p>`,
+      });
+
+      marker.addListener("click", () => {
+        infoWindow.open(map, marker);
+      });
+
+      markers.push(marker);
+    });
+  }
+
+  function filterByLocation(location) {
+    // Center map on the first hospital in the selected location (if available)
+    const selectedHospital = hospitals.find(
+      (hospital) => hospital.location === location
+    );
+
+    if (selectedHospital) {
+      map.setCenter({
+        lat: selectedHospital.lat,
+        lng: selectedHospital.lng,
+      });
+    }
+
+    // Load markers for the selected location
+    loadMarkers(location);
+  }
+
+  function loadMarkers() {
+    // Clear existing markers
+    markers.forEach((marker) => marker.setMap(null));
+    markers = [];
+
+    // Fetch hospitals from the page
+    const hospitalCards = document.querySelectorAll(".hospital-card");
+
+    hospitalCards.forEach((card) => {
+      const name = card.querySelector("h3").textContent;
+      const address = card.querySelector("p:nth-child(3)").textContent;
+      const latitude = parseFloat(
+        card
+          .querySelector(".view-more-btn")
+          .href.split("?q=")[1]
+          .split(",")[0]
+      );
+      const longitude = parseFloat(
+        card
+          .querySelector(".view-more-btn")
+          .href.split("?q=")[1]
+          .split(",")[1]
+      );
+
+      // Add a marker
+      const marker = new google.maps.Marker({
+        position: { lat: latitude, lng: longitude },
+        map,
+        title: name,
+      });
+
+      // Attach an info window
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<h3>${name}</h3><p>${address}</p>`,
+      });
+
+      marker.addListener("click", () => {
+        infoWindow.open(map, marker);
+      });
+
+      markers.push(marker);
+    });
+  }
+
+  // Update map markers as per the search
+  function searchHospitals() {
+    const searchInput = document.getElementById("search").value.toLowerCase();
+    const hospitalCards = document.querySelectorAll(".hospital-card");
+    document.getElementById("showMoreBtn").style.display = "none";
+
+    let visibleCount = 0;
+
+    hospitalCards.forEach((card) => {
+      const hospitalName = card.querySelector("h3").textContent.toLowerCase();
+      const hospitalAddress = card.querySelector("p:nth-child(4)").textContent.toLowerCase();
+
+      if (
+        hospitalName.includes(searchInput) ||
+        hospitalAddress.includes(searchInput)
+      ) {
+        card.style.display = "block";
+        visibleCount++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    // If no results are visible, show a popup message
+    if (visibleCount === 0) {
+      showPopup("Unable to find Hospital/Address. Please provide a valid Hospital Name/Address.");
+    }
+
+
+
+    // Update map markers to match the visible cards
+    loadMarkers();
+  }
+
+  // Function to show the popup message
+  function showPopup(message) {
+    // Create popup div
+    const popup = document.createElement("div");
+    popup.classList.add("popup-message");
+    popup.textContent = message;
+
+    // Append to the body
+    document.body.appendChild(popup);
+
+    // Automatically remove the popup after 3 seconds
+    setTimeout(() => {
+      popup.remove();
+    }, 3000);
+  }
+
+</script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjQb3jcfz9CSN2AlnkrxOB3OEptT5xXSY&callback=initMap">
+  </script>
+
+{% endblock %}

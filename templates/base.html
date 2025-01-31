@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load cache %} {% load static %}
+
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            http-equiv="Cache-control"
+            content="no-cache, no-store, must-revalidate" />
+        <meta name="description" content />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content />
+        <meta property="og:type" content />
+        <meta property="og:url" content />
+        <meta property="og:image" content />
+        <title>{% block title %}Online Medical Sheba{% endblock %}</title>
+        <!-- Load the static template tag -->
+
+        <!-- Favicon -->
+        <link rel="icon" href="{% static 'images/logo.png' %}" />
+
+        <!-- Google Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+            rel="stylesheet" />
+        <!-- Magnific-popup -->
+        <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" />
+
+        <!-- OWL Carousel CSS -->
+        <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" />
+        <link
+            rel="stylesheet"
+            href="{% static 'css/owl.theme.default.min.css' %}" />
+
+        <!-- Other CSS -->
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+
+        <!-- Icons -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
+
+        <!-- Jquery Ui css -->
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/findAmbulance.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/findHospital.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/DoctorList.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/DoctorDetails.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/book_appointment.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+        <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+
+        <!-- Start Header Area -->
+        <header class="header-area">
+            <!-- Start Header Top Area -->
+            <div class="header-top-area">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="header-top">
+                                <ul>
+                                    <li>
+                                        <a
+                                            href="mailto:medical.sheba@gmail.com">medical.sheba@gmail.com</a>
+                                    </li>
+                                    <li><a href="tel:+8801951503996">+880
+                                            1951503996</a></li>
+                                    <li>
+                                        <ul class="header-top-icon">
+                                            <li>
+                                                <a href="#"><i
+                                                        class="fab fa-facebook"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i
+                                                        class="fab fa-google"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#"><i
+                                                        class="fab fa-instagram"></i></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- \end{header top} -->
+            <!-- Start Main Menu -->
+            <div class="main-menu-area">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-1 col-md-12">
+                            <div class="logo">
+                                <a href="\"><img
+                                        src="{% static 'images/logo.png' %}"
+                                        alt="Logo" /></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="main-menu">
+                                <ul id="menu">
+                                    <li class="active"><a href="/">Home</a></li>
+                                    <li>
+                                        <a
+                                            href="{% url 'medicine_store:store_view' %}">Medicine</a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="{% url 'Ambulance:findAmbulance' %}">Ambulance</a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="{% url 'Hospital:findHospital' %}">Hospital</a>
+                                    </li>
+                                    <!-- <li><a href="#">Blood</a></li>
+                                    <li><a href="#">Blog</a></li>
+                                    <li><a href="#">Contact</a></li> -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="user-menu-icon hide-user-icon">
+                                <ul>
+                                    {% if user.is_authenticated %}
+
+                                    <li>
+                                        <div class="dropdown">
+                                            <a
+                                                href="#"
+                                                id="profileDropdown"
+                                                class="nav-link dropdown-toggle d-flex align-items-center"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false">
+                                                <!-- Dynamically load the user's profile picture -->
+                                                {% if user.profile_pic %}
+                                                <img
+                                                    src="{{ user.profile_pic.url }}"
+                                                    alt="Profile Picture"
+                                                    class="rounded-circle border"
+                                                    width="40"
+                                                    height="40" />
+                                                {% else %}
+                                                <img
+                                                    src="{% static 'images/avater.webp' %}"
+                                                    alt="Default Profile Picture"
+                                                    class="rounded-circle border"
+                                                    width="40"
+                                                    height="40" />
+                                                {% endif %}
+                                            </a>
+                                            <div
+                                                class="dropdown-menu dropdown-menu-right shadow-lg border-0 p-3"
+                                                aria-labelledby="profileDropdown">
+                                                <div
+                                                    class="d-flex align-items-center mb-3">
+                                                    <!-- Profile Picture -->
+                                                    {% if user.profile_pic %}
+                                                    <img
+                                                        src="{{ user.profile_pic.url }}"
+                                                        alt="Profile Picture"
+                                                        class="rounded-circle border"
+                                                        width="60"
+                                                        height="60" />
+                                                    {% else %}
+                                                    <img
+                                                        src="{% static 'images/avater.webp' %}"
+                                                        alt="Default Profile Picture"
+                                                        class="rounded-circle border"
+                                                        width="60"
+                                                        height="60" />
+                                                    {% endif %}
+                                                    <!-- User Info -->
+                                                    <div class="ml-3">
+                                                        <h6
+                                                            class="font-weight-bold mb-0">
+                                                            {{user.full_name|default:"User"}}
+                                                        </h6>
+                                                        <p
+                                                            class="mb-0 text-muted small">
+                                                            {{ user.email }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <a
+                                                    class="dropdown-item d-flex align-items-center"
+                                                    href="{% url 'accounts:dashboard_view' %}">
+                                                    <i
+                                                        class="fas fa-user-circle mr-2"></i>
+                                                    Profile
+                                                </a>
+                                                <a
+                                                    class="dropdown-item d-flex align-items-center"
+                                                    href="{% url 'accounts:change_password_view' %}">
+                                                    <i
+                                                        class="fas fa-lock mr-2"></i>
+                                                    Change Password
+                                                </a>
+                                                <a
+                                                    class="dropdown-item d-flex align-items-center"
+                                                    href="{% url 'accounts:change_photo_view' %}">
+                                                    <i
+                                                        class="fas fa-camera mr-2"></i>
+                                                    Change Photo
+                                                </a>
+                                                <div
+                                                    class="dropdown-divider"></div>
+                                                <a
+                                                    class="dropdown-item d-flex align-items-center text-danger"
+                                                    href="{% url 'accounts:logout_view' %}">
+                                                    <i
+                                                        class="fas fa-sign-out-alt mr-2"></i>
+                                                    Logout
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    {% else %}
+
+                                    <li>
+                                        <a
+                                            href="{% url 'accounts:login_view' %}"
+                                            class="btn-style-1">Login /
+                                            Register</a>
+                                    </li>
+                                    {% endif %}
+                                    <li>
+                                        <a
+                                            href="{% url 'cart:cart_detail' %}"
+                                            class="cart-btn btn-style-1">
+                                            <i class="fas fa-cart-plus"></i>
+                                            Cart
+                                            <sup id="cart_quantity">
+                                                ({{cart|length }}) items </sup>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- \end{Menu} -->
+        </header>
+        <!-- End Header Area -->
+
+        {% block content %}
+        <!-- Your page content goes here -->
+        {% endblock %}
+
+        <!-- Footer Section -->
+        <footer class="footer-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="footer-section">
+                            <h2>
+                                <a href="#"><img
+                                        src="{% static 'images/logo.png' %}"
+                                        alt /></a>
+                            </h2>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur sed do
+                                eiusmod tempor
+                                incididunt ut magna aliqua.
+                            </p>
+                            <div class="social-icons">
+                                <a href="#"><i class="fab fa-facebook"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="footer-section">
+                            <h3>Online Medical Sheba (OMS)</h3>
+                            <ul>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Contact</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Terms and Conditions</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="footer-section">
+                            <h3>For Patients</h3>
+                            <ul>
+                                <li><a href="#">Appointment</a></li>
+                                <li><a href="#">Medicine Store</a></li>
+                                <li><a href="#">Find Doctors</a></li>
+                                <li><a href="#">Find Ambulance</a></li>
+                                <li><a href="#">Health Blog</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="footer-section">
+                            <h3>For Doctors</h3>
+                            <ul>
+                                <li><a href="#">Login as a Doctor</a></li>
+                                <li><a href="#">Write Blog Post</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Online Medical Sheba (OMS). All rights reserved.</p>
+        </div>
+
+        <!-- JS Files -->
+        <!-- <script src="{% static 'js/jquery.min.js' %}"></script> -->
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+        <!-- Jquery Ui -->
+        <script src="{% static 'js/jquery-ui.js' %}"></script>
+        <!-- Jquery Zoom js -->
+        <script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+        <script src="{% static 'js/script.js' %}"></script>
+    </body>
+</html>
