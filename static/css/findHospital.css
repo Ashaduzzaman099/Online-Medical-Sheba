@@ -1,0 +1,258 @@
+/* Center Container */
+.hospital-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Title Section */
+.title-hospital h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #7469b6;
+    text-align: center;
+}
+
+/* Search Box Styling */
+.searching {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.search-box {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Location Buttons Section */
+.location-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.location-container h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.location-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.location-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #7469b6;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.show-more-btn {
+    display: block;
+    text-align: center;
+    background-color: #7469b6;
+    color: white;
+    padding: 10px 20px;
+    margin: 20px auto;
+    border-radius: 5px;
+    cursor: pointer;
+    width: fit-content;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.location-buttons button:hover {
+    background-color: #594d9b;
+}
+
+/* Google Map Section */
+#map {
+    height: 400px;
+    width: 100%;
+    margin: 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Recommended Hospitals Section */
+.recommended-container {
+    margin-top: 30px;
+}
+
+.recommended-container h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.wrapping {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 cards per row by default */
+    gap: 30px;
+    /* Space between grid items */
+    padding: 20px;
+    justify-items: stretch;
+    /* Ensure items stretch to fill grid cells */
+}
+
+@media (max-width: 1024px) {
+    .wrapping {
+        grid-template-columns: repeat(2,
+                1fr);
+        /* 2 cards per row on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapping {
+        grid-template-columns: 1fr;
+        /* 1 card per row on smaller screens */
+    }
+}
+
+.hospital-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    /* Full width of the grid column */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hospital-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hospital-icon img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.hospital-info {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.hospital-info h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.hospital-info p {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.hospital-info span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+}
+
+.view-more-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #7469b6;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.view-more-btn:hover {
+    background-color: #594d9b;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .wrapping {
+        grid-template-columns: repeat(2,
+                1fr);
+        /* 2 cards per row on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapping {
+        grid-template-columns: 1fr;
+        /* Single column on smaller screens */
+    }
+}
+
+
+/* 
+For popup when not find hospital 
+-------------------------------------------------------------------------
+*/
+.popup-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    /* Red background */
+    color: white;
+    /* White text */
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    text-align: center;
+    animation: fade-in-out 3s;
+}
+
+/* Fade-in and fade-out effect */
+@keyframes fade-in-out {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+
+/* 
+for show more button
+-------------------------------------------------------------------------
+*/

@@ -1,0 +1,297 @@
+/* Left Column (Doctor Profile) */
+.left-column {
+    flex: 1;
+    margin-right: 20px;
+}
+
+/* Right Column (Appointment Card) */
+.right-column {
+    flex: 0 0 300px;
+    position: sticky;
+    top: 20px;
+    /* Stickiness - stays fixed on scroll */
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 50%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #888;
+}
+
+.close:hover {
+    color: #333;
+}
+
+/* General Buttons */
+button {
+    cursor: pointer;
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* Confirm Button */
+.confirm-btn {
+    background-color: #c38af4;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+.confirm-btn:hover {
+    background-color: #753393;
+}
+
+/* Date Picker Styling */
+#date-picker {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    /* 7 days of the week */
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+#date-picker button {
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#date-picker button:hover {
+    background-color: #9647c1;
+    color: white;
+    transform: scale(1.05);
+}
+
+#date-picker button.selected {
+    background-color: #4caf50;
+    color: white;
+    border: 1px solid #4caf50;
+    font-weight: bold;
+}
+
+.option {
+    display: flex;
+    width: 100px;
+    height: 80px;
+}
+
+/* Label Styling */
+label {
+    display: block;
+    font-size: 16px;
+    margin: 15px 0 10px;
+    text-align: left;
+}
+
+/* Consultation and Appointment Type Button */
+.consultation-type-btn,
+.appointment-type-btn {
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #9647c1;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.consultation-type-btn:hover,
+.appointment-type-btn:hover {
+    background-color: #1e7631;
+    color: white;
+    border: 2px solid #9647c1;
+}
+
+.consultation-type-btn.selected,
+.appointment-type-btn.selected {
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+}
+
+select#location {
+    width: 530px;
+    height: 62px;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: inherit;
+    padding: 10px;
+    border: 2px solid #f3f4f6;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+select#location option {
+    font-size: 18px;
+}
+
+/* Doctor Profile Section */
+.doctor-profile {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-photo img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #a37ce5;
+}
+
+.doctor-info h2 {
+    font-size: 28px;
+    margin-top: 20px;
+    color: #444;
+}
+
+.doctor-info p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.doctor_about span {
+    font-size: 18px;
+    color: #a37ce5;
+    display: block;
+    margin-top: 20px;
+}
+
+.doctor_inf_show {
+    margin-top: 100px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tab-menu {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 2px solid #eaeaea;
+    margin-bottom: 20px;
+}
+
+.tab-link {
+    background-color: transparent;
+    border: none;
+    padding: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #4a4a4a;
+    outline: none;
+}
+
+.tab-link.active {
+    border-bottom: 3px solid #a37ce5;
+    color: #a37ce5;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.no-opinions {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.empty-image {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.no-opinions p {
+    color: #666;
+    margin-top: 10px;
+}
+
+/* Appointment Card Styles */
+.appointment-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.appointment-card h3 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #444;
+}
+
+.appointment-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.appointment-card ul li {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.appointment-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.appointment-btn:hover {
+    background-color: #0056b3;
+}

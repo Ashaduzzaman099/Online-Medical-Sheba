@@ -1,0 +1,241 @@
+.contain-Wrapping {
+    max-width: 1200px;
+    background-color: #ffffff;
+    margin: 0 auto;
+}
+
+.containers {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    margin: 20px auto;
+}
+
+.title-Doctor {
+    width: 100%;
+    height: 80px;
+    background-color: #a37ce5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-Doctor h2 {
+    color: #fcf9f9;
+    text-align: center;
+    font-size: 24px;
+}
+
+/* Doctor List styling */
+.doctor-list {
+    width: 60%;
+    /* Adjusted width for doctor list */
+}
+
+/* CSS for the Doctor List grid */
+.doctor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(900px, 1fr));
+    grid-gap: 20px;
+}
+
+.doctor-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgb(158, 160, 158);
+}
+
+.doctor-card img {
+    border-radius: 50%;
+    margin-bottom: 20px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #a37ce5;
+}
+
+.doctor-details {
+    text-align: center;
+}
+
+.specializations span {
+    background-color: #e9f5f9;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.box-style p {
+    width: 250px;
+    height: 25px;
+    background-color: #b3d5dd;
+    border-radius: 5px;
+}
+
+.box-style {
+    justify-content: center;
+    margin-left: 280px;
+}
+
+.doctor-details h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #333;
+}
+
+.doctor-details p {
+    justify-content: center;
+    margin: 5px 0;
+    color: #191919;
+    font-size: 18px;
+}
+
+.availability {
+    color: green;
+    margin: 10px 0;
+}
+
+.book-appointment {
+    margin-top: 10px;
+    display: flex;
+}
+
+.book-appointment input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-left: 150px;
+}
+
+.book-appointment button {
+    background-color: #995bcf;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.view_Profile {
+    margin-left: 20px;
+}
+
+.book-appointment button:hover {
+    background-color: #a37ce5;
+}
+
+/* Container Styling */
+.search-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+
+    border-radius: 8px;
+
+    /* Default Search Styling */
+    .search {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .search i {
+        position: absolute;
+        left: 10px;
+        color: #aaa;
+        font-size: 1.5rem;
+    }
+
+    .search-box {
+        max-width: 1200px;
+        padding: 20px 20px 20px 45px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 2rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .search-box:focus {
+        border-color: #7b509c;
+        outline: none;
+    }
+
+    /* Advanced Search Button */
+    #toggle-advanced-search {
+        display: block;
+
+        padding: 10px;
+        margin-bottom: 10px;
+        border: none;
+        background-color: #844d99;
+        color: #fff;
+        font-size: 1rem;
+        text-align: center;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #toggle-advanced-search:hover {
+        background-color: #7b509c;
+    }
+
+    /* Advanced Filters Container */
+    .advanced-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding-top: 10px;
+        border-top: 1px solid #ddd;
+    }
+
+    .filter {
+        flex: 1 1 100%;
+    }
+
+    .filter label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: #555;
+    }
+
+    .filter input,
+    .filter select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1.5rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .filter input:focus,
+    .filter select:focus {
+        border-color: #7b509c;
+        outline: none;
+    }
+
+    /* Responsive Design */
+    @media (min-width: 600px) {
+        .filter {
+            flex: 1 1 calc(50% - 15px);
+        }
+    }
+
+    @media (min-width: 900px) {
+        .filter {
+            flex: 1 1 calc(33.33% - 15px);
+        }
+    }
+}
